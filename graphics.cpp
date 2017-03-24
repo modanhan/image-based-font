@@ -202,6 +202,8 @@ bool InitializeGeometry(MyGeometry *geometry)
 
     // create another one for storing our colours
     glGenBuffers(1, &geometry->colourBuffer);
+    
+    glGenBuffers(1, &geometry->textcoordBuffer);
 
     // create a vertex array object encapsulating all our vertex attributes
     glGenVertexArrays(1, &geometry->vertexArray);
@@ -216,6 +218,11 @@ bool InitializeGeometry(MyGeometry *geometry)
     glBindBuffer(GL_ARRAY_BUFFER, geometry->colourBuffer);
     glVertexAttribPointer(COLOUR_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(COLOUR_LOCATION);
+    
+    // assocaite the textcoord array with the vertex array object
+    glBindBuffer(GL_ARRAY_BUFFER, geometry->textcoordBuffer);
+    glVertexAttribPointer(TEXTCOORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(TEXTCOORD_LOCATION);
 
     // unbind our buffers, resetting to default state
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -245,6 +252,14 @@ void BufferGeometry(MyGeometry *geometry){
         { 1.0, 1.0, 1.0 },
         { 1.0, 1.0, 1.0 }
     };
+	const GLfloat textcoords[][2] = {
+        { 0., 0. },
+        {  1., 1. },
+        {  0., 1. },
+        { 0., 0. },
+        {  1., 0. },
+        {  1., 1. }
+    };
     geometry->elementCount = 6;
     
     glBindBuffer(GL_ARRAY_BUFFER, geometry->vertexBuffer);
@@ -252,6 +267,9 @@ void BufferGeometry(MyGeometry *geometry){
     
     glBindBuffer(GL_ARRAY_BUFFER, geometry->colourBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colours), colours, GL_STATIC_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, geometry->textcoordBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(textcoords), textcoords, GL_STATIC_DRAW);
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

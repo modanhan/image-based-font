@@ -10,6 +10,7 @@
 
 #define VERTEX_LOCATION 0
 #define COLOUR_LOCATION 1
+#define TEXTCOORD_LOCATION 2
 
 namespace graphics{
 // --------------------------------------------------------------------------
@@ -45,6 +46,7 @@ struct MyGeometry
     // OpenGL names for array buffer objects, vertex array object
     GLuint  vertexBuffer;
     GLuint  colourBuffer;
+    GLuint  textcoordBuffer;
     GLuint  vertexArray;
     GLsizei elementCount;
 
