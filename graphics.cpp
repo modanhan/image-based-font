@@ -7,6 +7,8 @@
 #include <algorithm>
 using namespace std;
 
+#include <Magick++.h>
+
 namespace graphics{
 
 
@@ -253,6 +255,60 @@ void DestroyGeometry(MyGeometry *geometry)
     glDeleteVertexArrays(1, &geometry->vertexArray);
     glDeleteBuffers(1, &geometry->vertexBuffer);
     glDeleteBuffers(1, &geometry->colourBuffer);
+}
+
+bool InitializeTexture(MyTexture *texture, const string &imageFileName)
+{
+    Magick::Image myImage;
+
+    // try to read the provided image file
+    try {
+        myImage.read(imageFileName);
+    }
+    catch (Magick::Error &error) {
+        cout << "Magick++ failed to read image " << imageFileName << endl;
+        cout << "ERROR: " << error.what() << endl;
+        return false;
+    }
+
+    // store the image width and height into the texture structure
+    texture->width = myImage.columns();
+    texture->height = myImage.rows();
+
+    // create a Magick++ pixel cache from the image for direct access to data
+    Magick::Pixels pixelCache(myImage);
+    Magick::PixelPacket *pixels;
+    pixels = pixelCache.get(0, 0, texture->width, texture->height);
+
+    // determine the number of stored bytes per pixel channel in the cache
+    GLenum channelDataType;
+    switch (sizeof(Magick::Quantum)) {
+        case 4:     channelDataType = GL_UNSIGNED_INT;      break;
+        case 2:     channelDataType = GL_UNSIGNED_SHORT;    break;
+        default:    channelDataType = GL_UNSIGNED_BYTE;
+    }
+
+    // create a texture name to associate our image data with
+    if (!texture->textureID)
+        glGenTextures(1, &texture->textureID);
+
+    // bind the texture as a "rectangle" to access using image pixel coordinates
+    glBindTexture(GL_TEXTURE_RECTANGLE, texture->textureID);
+
+    // send image pixel data to OpenGL texture memory
+    glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGB, texture->width, texture->height,
+                 0, GL_BGRA, channelDataType, pixels);
+
+    // unbind this texture
+    glBindTexture(GL_TEXTURE_RECTANGLE, 0);
+
+    return !CheckGLErrors();
+}
+	
+void DestroyTexture(MyTexture *texture)
+{
+	glBindTexture(texture->target, 0);
+	glDeleteTextures(1, &texture->textureID);
 }
 
 // --------------------------------------------------------------------------

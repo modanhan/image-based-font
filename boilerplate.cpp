@@ -27,6 +27,8 @@ using namespace graphics;
 
 int main(int argc, char *argv[])
 {   
+	Magick::InitializeMagick(0);
+
     // initialize the GLFW windowing system
     if (!glfwInit()) {
         cout << "ERROR: GLFW failed to initilize, TERMINATING" << endl;
@@ -65,6 +67,10 @@ int main(int argc, char *argv[])
     MyGeometry geometry;
     if (!InitializeGeometry(&geometry))
         cout << "Program failed to intialize geometry!" << endl;
+
+	MyTexture texture;
+	if (!InitializeTexture(&texture, "images/rough-horn-2146181_1920.jpg"))
+		cout << "Program failed to intialize texture!" << endl;
 
     // run an event-triggered main loop
     while (!glfwWindowShouldClose(window))

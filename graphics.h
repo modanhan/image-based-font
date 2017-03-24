@@ -6,6 +6,7 @@
 #define GLFW_INCLUDE_GLCOREARB
 #define GL_GLEXT_PROTOTYPES
 #include <GLFW/glfw3.h>
+#include <Magick++.h>
 
 namespace graphics{
 // --------------------------------------------------------------------------
@@ -49,10 +50,25 @@ struct MyGeometry
     {}
 };
 
+struct MyTexture
+	{
+		GLuint textureID;
+		GLuint target;
+		int width;
+		int height;
+
+		// initialize object names to zero (OpenGL reserved value)
+		MyTexture() : textureID(0), target(0), width(0), height(0)
+		{}
+	};
+
 bool InitializeShaders(MyShader *shader);
 void DestroyShaders(MyShader *shader);
 bool InitializeGeometry(MyGeometry *geometry);
 void DestroyGeometry(MyGeometry *geometry);
+
+bool InitializeTexture(MyTexture *texture, const std::string &imageFileName);
+void DestroyTexture(MyTexture *texture);
 
 void Render(MyGeometry *geometry, MyShader *shader);
 
