@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     while (!glfwWindowShouldClose(window))
     {
         // call function to draw our scene
-        Render(&geometry, &shader);
+        Render(&geometry, &shader, texture.textureID);
 
         // scene is rendered to the back buffer, so swap to front for display
         glfwSwapBuffers(window);

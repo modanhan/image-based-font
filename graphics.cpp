@@ -17,7 +17,7 @@ namespace graphics{
 // --------------------------------------------------------------------------
 // Rendering function that draws our scene to the frame buffer
 
-void Render(MyGeometry *geometry, MyShader *shader)
+void Render(MyGeometry *geometry, MyShader *shader, GLuint texture)
 {
     // clear screen to a dark grey colour
     glClearColor(0.2, 0.2, 0.2, 1.0);
@@ -27,6 +27,11 @@ void Render(MyGeometry *geometry, MyShader *shader)
     // scene geometry, then tell OpenGL to draw our geometry
     glUseProgram(shader->program);
     glBindVertexArray(geometry->vertexArray);
+    
+    glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(glGetUniformLocation(shader->program, "TextureImage"), 0);
+    
     glDrawArrays(GL_TRIANGLES, 0, geometry->elementCount);
 
     // reset state to default (no shader or geometry bound)
@@ -253,12 +258,12 @@ void BufferGeometry(MyGeometry *geometry){
         { 1.0, 1.0, 1.0 }
     };
 	const GLfloat textcoords[][2] = {
-        { 0., 0. },
-        {  1., 1. },
-        {  0., 1. },
-        { 0., 0. },
+        { 0., 1. },
         {  1., 0. },
-        {  1., 1. }
+        {  0., 0. },
+        { 0., 1. },
+        {  1., 1. },
+        {  1., 0. }
     };
     geometry->elementCount = 6;
     
@@ -320,14 +325,19 @@ bool InitializeTexture(MyTexture *texture, const string &imageFileName)
         glGenTextures(1, &texture->textureID);
 
     // bind the texture as a "rectangle" to access using image pixel coordinates
-    glBindTexture(GL_TEXTURE_RECTANGLE, texture->textureID);
+    glBindTexture(GL_TEXTURE_2D, texture->textureID);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // send image pixel data to OpenGL texture memory
-    glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGB, texture->width, texture->height,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture->width, texture->height,
                  0, GL_BGRA, channelDataType, pixels);
 
     // unbind this texture
-    glBindTexture(GL_TEXTURE_RECTANGLE, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     return !CheckGLErrors();
 }
