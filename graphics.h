@@ -7,6 +7,7 @@
 #define GL_GLEXT_PROTOTYPES
 #include <GLFW/glfw3.h>
 #include <Magick++.h>
+#include <glm/glm.hpp>
 
 #define VERTEX_LOCATION 0
 #define COLOUR_LOCATION 1
@@ -66,16 +67,26 @@ struct MyTexture
 		MyTexture() : textureID(0), target(0), width(0), height(0)
 		{}
 	};
+	
+struct MyFrameBuffer {
+	GLuint fbo;
+	GLuint texture;
+	GLuint rbo;
 
-bool InitializeShaders(MyShader *shader);
+	MyFrameBuffer() :fbo(0), texture(0), rbo(0) {}
+};
+
+bool InitializeShaders(MyShader *shader, const char* fragment);
 void DestroyShaders(MyShader *shader);
 bool InitializeGeometry(MyGeometry *geometry);
 void DestroyGeometry(MyGeometry *geometry);
 
+bool InitializeFrameBuffer(MyFrameBuffer* frameBuffer, glm::vec2 dimension, bool HDR);
+
 bool InitializeTexture(MyTexture *texture, const std::string &imageFileName);
 void DestroyTexture(MyTexture *texture);
 
-void Render(MyGeometry *geometry, MyShader *shader, GLuint);
+void Render(MyGeometry *geometry, MyShader *shader, GLuint, MyFrameBuffer*);
 
 void ErrorCallback(int error, const char* description);
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);

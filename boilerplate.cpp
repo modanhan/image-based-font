@@ -19,6 +19,7 @@
 #include "graphics.h"
 
 using namespace std;
+using namespace glm;
 using namespace graphics;
 
 
@@ -58,11 +59,23 @@ int main(int argc, char *argv[])
 
     // call function to load and compile shader programs
     MyShader shader;
-    if (!InitializeShaders(&shader)) {
+    if (!InitializeShaders(&shader, "fragment.glsl")) {
         cout << "Program could not initialize shaders, TERMINATING" << endl;
         return -1;
     }
-
+    
+    MyShader blurShader;
+    if (!InitializeShaders(&blurShader, "shaders/blur.glsl")) {
+        cout << "Program could not initialize shaders, TERMINATING" << endl;
+        return -1;
+    }
+    
+    MyShader sobelShader;
+    if (!InitializeShaders(&sobelShader, "shaders/sobel.glsl")) {
+        cout << "Program could not initialize shaders, TERMINATING" << endl;
+        return -1;
+    }
+    
     // call function to create and fill buffers with geometry data
     MyGeometry geometry;
     if (!InitializeGeometry(&geometry))
@@ -71,12 +84,19 @@ int main(int argc, char *argv[])
 	MyTexture texture;
 	if (!InitializeTexture(&texture, "images/0x0ss-85.jpg"))
 		cout << "Program failed to intialize texture!" << endl;
+		
+	MyFrameBuffer blurFramebuffer;
+	if (!InitializeFrameBuffer(&blurFramebuffer, vec2(1024), 1))
+		cout << "Program failed to intialize frame buffer!" << endl;
+	
+	MyFrameBuffer nullFramebuffer;
 
     // run an event-triggered main loop
     while (!glfwWindowShouldClose(window))
     {
         // call function to draw our scene
-        Render(&geometry, &shader, texture.textureID);
+        Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
+        Render(&geometry, &sobelShader, blurFramebuffer.texture, &nullFramebuffer);
 
         // scene is rendered to the back buffer, so swap to front for display
         glfwSwapBuffers(window);

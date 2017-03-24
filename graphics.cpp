@@ -9,6 +9,8 @@ using namespace std;
 
 #include <Magick++.h>
 
+using namespace glm;
+
 namespace graphics{
 
 
@@ -17,8 +19,11 @@ namespace graphics{
 // --------------------------------------------------------------------------
 // Rendering function that draws our scene to the frame buffer
 
-void Render(MyGeometry *geometry, MyShader *shader, GLuint texture)
+void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, MyFrameBuffer* framebuffer)
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
+	glBindTexture(GL_TEXTURE_2D, framebuffer->texture);
+	
     // clear screen to a dark grey colour
     glClearColor(0.2, 0.2, 0.2, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -37,6 +42,8 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint texture)
     // reset state to default (no shader or geometry bound)
     glBindVertexArray(0);
     glUseProgram(0);
+    
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // check for an report any OpenGL errors
     CheckGLErrors();
@@ -171,11 +178,11 @@ GLuint LinkProgram(GLuint vertexShader, GLuint fragmentShader)
 }
 
 // load, compile, and link shaders, returning true if successful
-bool InitializeShaders(MyShader *shader)
+bool InitializeShaders(MyShader *shader, const char* fragment)
 {
     // load shader source from files
     string vertexSource = LoadSource("vertex.glsl");
-    string fragmentSource = LoadSource("shaders/sobel.glsl");
+    string fragmentSource = LoadSource(fragment);
     if (vertexSource.empty() || fragmentSource.empty()) return false;
 
     // compile shader source into shader objects
@@ -347,6 +354,29 @@ void DestroyTexture(MyTexture *texture)
 	glBindTexture(texture->target, 0);
 	glDeleteTextures(1, &texture->textureID);
 }
+
+bool InitializeFrameBuffer(MyFrameBuffer* frameBuffer, vec2 dimension, bool HDR) {
+		glGenFramebuffers(1, &frameBuffer->fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer->fbo);
+
+		glGenTextures(1, &frameBuffer->texture);
+		glBindTexture(GL_TEXTURE_2D, frameBuffer->texture);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, (HDR) ? GL_RGBA16F : GL_RGBA, dimension.x, dimension.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameBuffer->texture, 0);
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			return false;
+		}
+
+		return true;
+	}
 
 // --------------------------------------------------------------------------
 // GLFW callback functions
