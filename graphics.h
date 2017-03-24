@@ -49,4 +49,13 @@ struct MyGeometry
     {}
 };
 
+bool InitializeShaders(MyShader *shader);
+void DestroyShaders(MyShader *shader);
+bool InitializeGeometry(MyGeometry *geometry);
+void DestroyGeometry(MyGeometry *geometry);
+
+void Render(MyGeometry *geometry, MyShader *shader);
+
+void ErrorCallback(int error, const char* description);
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 }
