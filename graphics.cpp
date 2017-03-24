@@ -230,16 +230,22 @@ bool InitializeGeometry(MyGeometry *geometry)
 void BufferGeometry(MyGeometry *geometry){
 	    // three vertex positions and assocated colours of a triangle
     const GLfloat vertices[][2] = {
-        { -0.6, -0.4 },
-        {  0.6, -0.4 },
-        {  0.0,  0.6 }
+        { -1., -1. },
+        {  1., 1. },
+        {  -1., 1. },
+        { -1., -1. },
+        {  1., -1. },
+        {  1., 1. }
     };
     const GLfloat colours[][3] = {
         { 1.0, 1.0, 1.0 },
         { 1.0, 1.0, 1.0 },
+        { 1.0, 1.0, 1.0 },
+        { 1.0, 1.0, 1.0 },
+        { 1.0, 1.0, 1.0 },
         { 1.0, 1.0, 1.0 }
     };
-    geometry->elementCount = 3;
+    geometry->elementCount = 6;
     
     glBindBuffer(GL_ARRAY_BUFFER, geometry->vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);

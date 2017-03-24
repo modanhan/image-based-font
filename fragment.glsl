@@ -8,6 +8,7 @@
 
 // interpolated colour received from vertex stage
 in vec3 Colour;
+in vec2 Textcoord;
 
 // first output is mapped to the framebuffer's colour index by default
 out vec4 FragmentColour;
