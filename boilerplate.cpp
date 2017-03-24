@@ -16,37 +16,10 @@
 #include <iterator>
 #include <algorithm>
 
-// specify that we want the OpenGL core profile before including GLFW headers
-#define GLFW_INCLUDE_GLCOREARB
-#define GL_GLEXT_PROTOTYPES
-#include <GLFW/glfw3.h>
+#include "graphics.h"
 
 using namespace std;
-
-// --------------------------------------------------------------------------
-// OpenGL utility and support function prototypes
-
-void QueryGLVersion();
-bool CheckGLErrors();
-
-string LoadSource(const string &filename);
-GLuint CompileShader(GLenum shaderType, const string &source);
-GLuint LinkProgram(GLuint vertexShader, GLuint fragmentShader);
-
-// --------------------------------------------------------------------------
-// Functions to set up OpenGL shader programs for rendering
-
-struct MyShader
-{
-    // OpenGL names for vertex and fragment shaders, shader program
-    GLuint  vertex;
-    GLuint  fragment;
-    GLuint  program;
-
-    // initialize shader and program names to zero (OpenGL reserved value)
-    MyShader() : vertex(0), fragment(0), program(0)
-    {}
-};
+using namespace graphics;
 
 // load, compile, and link shaders, returning true if successful
 bool InitializeShaders(MyShader *shader)
@@ -76,22 +49,6 @@ void DestroyShaders(MyShader *shader)
     glDeleteShader(shader->vertex);
     glDeleteShader(shader->fragment);
 }
-
-// --------------------------------------------------------------------------
-// Functions to set up OpenGL buffers for storing geometry data
-
-struct MyGeometry
-{
-    // OpenGL names for array buffer objects, vertex array object
-    GLuint  vertexBuffer;
-    GLuint  colourBuffer;
-    GLuint  vertexArray;
-    GLsizei elementCount;
-
-    // initialize object names to zero (OpenGL reserved value)
-    MyGeometry() : vertexBuffer(0), colourBuffer(0), vertexArray(0), elementCount(0)
-    {}
-};
 
 // create buffers and fill with geometry data, returning true if successful
 bool InitializeGeometry(MyGeometry *geometry)
@@ -262,129 +219,5 @@ int main(int argc, char *argv[])
     cout << "Goodbye!" << endl;
     return 0;
 }
-
-// ==========================================================================
-// SUPPORT FUNCTION DEFINITIONS
-
-// --------------------------------------------------------------------------
-// OpenGL utility functions
-
-void QueryGLVersion()
-{
-    // query opengl version and renderer information
-    string version  = reinterpret_cast<const char *>(glGetString(GL_VERSION));
-    string glslver  = reinterpret_cast<const char *>(glGetString(GL_SHADING_LANGUAGE_VERSION));
-    string renderer = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
-
-    cout << "OpenGL [ " << version << " ] "
-         << "with GLSL [ " << glslver << " ] "
-         << "on renderer [ " << renderer << " ]" << endl;
-}
-
-bool CheckGLErrors()
-{
-    bool error = false;
-    for (GLenum flag = glGetError(); flag != GL_NO_ERROR; flag = glGetError())
-    {
-        cout << "OpenGL ERROR:  ";
-        switch (flag) {
-        case GL_INVALID_ENUM:
-            cout << "GL_INVALID_ENUM" << endl; break;
-        case GL_INVALID_VALUE:
-            cout << "GL_INVALID_VALUE" << endl; break;
-        case GL_INVALID_OPERATION:
-            cout << "GL_INVALID_OPERATION" << endl; break;
-        case GL_INVALID_FRAMEBUFFER_OPERATION:
-            cout << "GL_INVALID_FRAMEBUFFER_OPERATION" << endl; break;
-        case GL_OUT_OF_MEMORY:
-            cout << "GL_OUT_OF_MEMORY" << endl; break;
-        default:
-            cout << "[unknown error code]" << endl;
-        }
-        error = true;
-    }
-    return error;
-}
-
-// --------------------------------------------------------------------------
-// OpenGL shader support functions
-
-// reads a text file with the given name into a string
-string LoadSource(const string &filename)
-{
-    string source;
-
-    ifstream input(filename.c_str());
-    if (input) {
-        copy(istreambuf_iterator<char>(input),
-             istreambuf_iterator<char>(),
-             back_inserter(source));
-        input.close();
-    }
-    else {
-        cout << "ERROR: Could not load shader source from file "
-             << filename << endl;
-    }
-
-    return source;
-}
-
-// creates and returns a shader object compiled from the given source
-GLuint CompileShader(GLenum shaderType, const string &source)
-{
-    // allocate shader object name
-    GLuint shaderObject = glCreateShader(shaderType);
-
-    // try compiling the source as a shader of the given type
-    const GLchar *source_ptr = source.c_str();
-    glShaderSource(shaderObject, 1, &source_ptr, 0);
-    glCompileShader(shaderObject);
-
-    // retrieve compile status
-    GLint status;
-    glGetShaderiv(shaderObject, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        GLint length;
-        glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &length);
-        string info(length, ' ');
-        glGetShaderInfoLog(shaderObject, info.length(), &length, &info[0]);
-        cout << "ERROR compiling shader:" << endl << endl;
-        cout << source << endl;
-        cout << info << endl;
-    }
-
-    return shaderObject;
-}
-
-// creates and returns a program object linked from vertex and fragment shaders
-GLuint LinkProgram(GLuint vertexShader, GLuint fragmentShader)
-{
-    // allocate program object name
-    GLuint programObject = glCreateProgram();
-
-    // attach provided shader objects to this program
-    if (vertexShader)   glAttachShader(programObject, vertexShader);
-    if (fragmentShader) glAttachShader(programObject, fragmentShader);
-
-    // try linking the program with given attachments
-    glLinkProgram(programObject);
-
-    // retrieve link status
-    GLint status;
-    glGetProgramiv(programObject, GL_LINK_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        GLint length;
-        glGetProgramiv(programObject, GL_INFO_LOG_LENGTH, &length);
-        string info(length, ' ');
-        glGetProgramInfoLog(programObject, info.length(), &length, &info[0]);
-        cout << "ERROR linking shader program:" << endl;
-        cout << info << endl;
-    }
-
-    return programObject;
-}
-
 
 // ==========================================================================
