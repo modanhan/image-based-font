@@ -175,7 +175,7 @@ bool InitializeShaders(MyShader *shader)
 {
     // load shader source from files
     string vertexSource = LoadSource("vertex.glsl");
-    string fragmentSource = LoadSource("fragment.glsl");
+    string fragmentSource = LoadSource("shaders/blur.glsl");
     if (vertexSource.empty() || fragmentSource.empty()) return false;
 
     // compile shader source into shader objects
