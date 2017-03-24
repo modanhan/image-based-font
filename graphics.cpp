@@ -197,33 +197,11 @@ void DestroyShaders(MyShader *shader)
 // create buffers and fill with geometry data, returning true if successful
 bool InitializeGeometry(MyGeometry *geometry)
 {
-    // three vertex positions and assocated colours of a triangle
-    const GLfloat vertices[][2] = {
-        { -0.6, -0.4 },
-        {  0.6, -0.4 },
-        {  0.0,  0.6 }
-    };
-    const GLfloat colours[][3] = {
-        { 1.0, 0.0, 0.0 },
-        { 0.0, 1.0, 0.0 },
-        { 0.0, 0.0, 1.0 }
-    };
-    geometry->elementCount = 3;
-
-    // these vertex attribute indices correspond to those specified for the
-    // input variables in the vertex shader
-    const GLuint VERTEX_INDEX = 0;
-    const GLuint COLOUR_INDEX = 1;
-
     // create an array buffer object for storing our vertices
     glGenBuffers(1, &geometry->vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, geometry->vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // create another one for storing our colours
     glGenBuffers(1, &geometry->colourBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, geometry->colourBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colours), colours, GL_STATIC_DRAW);
 
     // create a vertex array object encapsulating all our vertex attributes
     glGenVertexArrays(1, &geometry->vertexArray);
@@ -231,20 +209,45 @@ bool InitializeGeometry(MyGeometry *geometry)
 
     // associate the position array with the vertex array object
     glBindBuffer(GL_ARRAY_BUFFER, geometry->vertexBuffer);
-    glVertexAttribPointer(VERTEX_INDEX, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(VERTEX_INDEX);
+    glVertexAttribPointer(VERTEX_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(VERTEX_LOCATION);
 
     // assocaite the colour array with the vertex array object
     glBindBuffer(GL_ARRAY_BUFFER, geometry->colourBuffer);
-    glVertexAttribPointer(COLOUR_INDEX, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(COLOUR_INDEX);
+    glVertexAttribPointer(COLOUR_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(COLOUR_LOCATION);
 
     // unbind our buffers, resetting to default state
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+	BufferGeometry(geometry);
+
     // check for OpenGL errors and return false if error occurred
     return !CheckGLErrors();
+}
+
+void BufferGeometry(MyGeometry *geometry){
+	    // three vertex positions and assocated colours of a triangle
+    const GLfloat vertices[][2] = {
+        { -0.6, -0.4 },
+        {  0.6, -0.4 },
+        {  0.0,  0.6 }
+    };
+    const GLfloat colours[][3] = {
+        { 1.0, 1.0, 1.0 },
+        { 1.0, 1.0, 1.0 },
+        { 1.0, 1.0, 1.0 }
+    };
+    geometry->elementCount = 3;
+    
+    glBindBuffer(GL_ARRAY_BUFFER, geometry->vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, geometry->colourBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colours), colours, GL_STATIC_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 // deallocate geometry-related objects

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    window = glfwCreateWindow(512, 512, "CPSC 453 OpenGL Boilerplate", 0, 0);
+    window = glfwCreateWindow(1024, 1024, "CPSC 453 OpenGL Boilerplate", 0, 0);
     if (!window) {
         cout << "Program failed to create GLFW window, TERMINATING" << endl;
         glfwTerminate();
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         cout << "Program failed to intialize geometry!" << endl;
 
 	MyTexture texture;
-	if (!InitializeTexture(&texture, "images/rough-horn-2146181_1920.jpg"))
+	if (!InitializeTexture(&texture, "images/asian-1239271_1920.jpg"))
 		cout << "Program failed to intialize texture!" << endl;
 
     // run an event-triggered main loop

@@ -8,6 +8,9 @@
 #include <GLFW/glfw3.h>
 #include <Magick++.h>
 
+#define VERTEX_LOCATION 0
+#define COLOUR_LOCATION 1
+
 namespace graphics{
 // --------------------------------------------------------------------------
 // OpenGL utility and support function prototypes
@@ -74,4 +77,5 @@ void Render(MyGeometry *geometry, MyShader *shader);
 
 void ErrorCallback(int error, const char* description);
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void BufferGeometry(MyGeometry *geometry);
 }
