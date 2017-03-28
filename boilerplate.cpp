@@ -70,6 +70,12 @@ int main(int argc, char *argv[])
         return -1;
     }
     
+    MyShader cannyShader;
+    if (!InitializeShaders(&cannyShader, "shaders/canny.glsl")) {
+        cout << "Program could not initialize shaders, TERMINATING" << endl;
+        return -1;
+    }
+    
     MyShader sobelShader;
     if (!InitializeShaders(&sobelShader, "shaders/sobel.glsl")) {
         cout << "Program could not initialize shaders, TERMINATING" << endl;
@@ -88,6 +94,10 @@ int main(int argc, char *argv[])
 	MyFrameBuffer blurFramebuffer;
 	if (!InitializeFrameBuffer(&blurFramebuffer, vec2(1024), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
+		
+	MyFrameBuffer cannyFramebuffer;
+	if (!InitializeFrameBuffer(&cannyFramebuffer, vec2(1024), 1))
+		cout << "Program failed to intialize frame buffer!" << endl;
 	
 	MyFrameBuffer nullFramebuffer;
 
@@ -96,7 +106,8 @@ int main(int argc, char *argv[])
     {
         // call function to draw our scene
         Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
-        Render(&geometry, &sobelShader, blurFramebuffer.texture, &nullFramebuffer);
+        Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
+        Render(&geometry, &cannyShader, cannyFramebuffer.texture, &nullFramebuffer);
 
         // scene is rendered to the back buffer, so swap to front for display
         glfwSwapBuffers(window);
