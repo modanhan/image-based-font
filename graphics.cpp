@@ -24,8 +24,7 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, MyFrameBuffe
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
 	glBindTexture(GL_TEXTURE_2D, framebuffer->texture);
 	
-    // clear screen to a dark grey colour
-    glClearColor(0.2, 0.2, 0.2, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // bind our shader program and the vertex array object containing our
@@ -49,7 +48,38 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, MyFrameBuffe
     CheckGLErrors();
 }
 
+void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, GLuint texture1, MyFrameBuffer* framebuffer)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
+	glBindTexture(GL_TEXTURE_2D, framebuffer->texture);
+	
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
 
+    // bind our shader program and the vertex array object containing our
+    // scene geometry, then tell OpenGL to draw our geometry
+    glUseProgram(shader->program);
+    glBindVertexArray(geometry->vertexArray);
+    
+    glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(glGetUniformLocation(shader->program, "TextureImage"), 0);
+    
+    glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
+    glUniform1i(glGetUniformLocation(shader->program, "TextureImage1"), 1);
+    
+    glDrawArrays(GL_TRIANGLES, 0, geometry->elementCount);
+
+    // reset state to default (no shader or geometry bound)
+    glBindVertexArray(0);
+    glUseProgram(0);
+    
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // check for an report any OpenGL errors
+    CheckGLErrors();
+}
 
 
 

@@ -34,6 +34,7 @@ void main(void)
 	FragmentColour.w=1;
 	if(FragmentColour.x+FragmentColour.y+FragmentColour.z<1.3){
 		FragmentColour.xyz=vec3(0);
+	}else{
+		FragmentColour.xyz=vec3(1);
 	}
-	
 }
