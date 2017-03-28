@@ -104,6 +104,10 @@ int main(int argc, char *argv[])
 	MyFrameBuffer cannyFramebuffer;
 	if (!InitializeFrameBuffer(&cannyFramebuffer, vec2(1024), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
+		
+	MyFrameBuffer harrisStorageFramebuffer;
+	if (!InitializeFrameBuffer(&harrisStorageFramebuffer, vec2(1024), 1))
+		cout << "Program failed to intialize frame buffer!" << endl;
 	
 	MyFrameBuffer nullFramebuffer;
 
@@ -114,6 +118,9 @@ int main(int argc, char *argv[])
         Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
         Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
         Render(&geometry, &cannyShader, cannyFramebuffer.texture, &nullFramebuffer);
+        
+        Render(&geometry, &harrisShader, texture.textureID, &cannyFramebuffer);
+        
 
         // scene is rendered to the back buffer, so swap to front for display
         glfwSwapBuffers(window);
