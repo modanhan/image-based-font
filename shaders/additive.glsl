@@ -18,9 +18,11 @@ uniform sampler2D TextureImage1;
 
 void main(void)
 {
-    // write colour output without modification
+	vec2 size=textureSize(TextureImage, 0).xy;
+	
     FragmentColour = vec4(texture(TextureImage, Textcoord).xyz, 1.0);
     FragmentColour.x=0;
-    FragmentColour += vec4(texture(TextureImage1, Textcoord).xyz, 1.0);
+    for(int i=-10;i<10;i++) FragmentColour += vec4(texture(TextureImage1, Textcoord+vec2(i/size.x,0)).xyz, 1.0);
+    for(int i=-10;i<10;i++) FragmentColour += vec4(texture(TextureImage1, Textcoord+vec2(0,i/size.y)).xyz, 1.0);
     FragmentColour.w=0;
 }
