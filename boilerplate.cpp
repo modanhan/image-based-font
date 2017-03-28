@@ -82,6 +82,12 @@ int main(int argc, char *argv[])
         return -1;
     }
     
+    MyShader harrisShader;
+    if (!InitializeShaders(&harrisShader, "shaders/harris.glsl")) {
+        cout << "Program could not initialize shaders, TERMINATING" << endl;
+        return -1;
+    }
+    
     // call function to create and fill buffers with geometry data
     MyGeometry geometry;
     if (!InitializeGeometry(&geometry))

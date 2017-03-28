@@ -33,6 +33,10 @@ void main(void)
     -texture(TextureImage, Textcoord+vec2(0/size.x,-1)).xyz
     -texture(TextureImage, Textcoord+vec2(1/size.x,-1/size.y)).xyz;
     
-    FragmentColour.xyz=abs(h)+abs(v);
+    vec3 ix=h*h;
+    vec3 iy=v*v;
+    vec3 ixy=h*v;
+    
+    FragmentColour.xyz=abs(ix*iy-ixy*ixy-0.6*(ix+iy)*(ix+iy));
     FragmentColour.w=1;
 }

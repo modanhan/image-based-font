@@ -19,7 +19,10 @@ void main(void)
 {
 	vec2 dv=textureSize(TextureImage, 0).xy;
     vec4 fc0 = vec4(texture(TextureImage, Textcoord).xyz, 1.0);
-    if(fc0.x+fc0.y+fc0.z<3.9)fc0.xyz=vec3(0);
+    
+    float dt=1.5;
+    
+    if(fc0.x+fc0.y+fc0.z<dt)fc0.xyz=vec3(0);
     {
     	vec4 tc=texture(TextureImage, Textcoord+vec2(1/dv.x,0/dv.y));
     	if(fc0.x+fc0.y+fc0.z<tc.x+tc.y+tc.z)fc0.xyz=vec3(0);
@@ -32,7 +35,7 @@ void main(void)
 
     
     vec4 fc1 = vec4(texture(TextureImage, Textcoord).xyz, 0.0);
-    if(fc1.x+fc1.y+fc1.z<3.9)fc1.xyz=vec3(0);
+    if(fc1.x+fc1.y+fc1.z<dt)fc1.xyz=vec3(0);
     {
     	vec4 tc=texture(TextureImage, Textcoord+vec2(0/dv.x,1/dv.y));
     	if(fc1.x+fc1.y+fc1.z<tc.x+tc.y+tc.z)fc1.xyz=vec3(0);
