@@ -18,6 +18,7 @@
 
 #include "graphics.h"
 #include "input.h"
+#include "mode.h"
 
 using namespace std;
 using namespace glm;
@@ -104,7 +105,7 @@ int main(int argc, char *argv[])
         cout << "Program failed to intialize geometry!" << endl;
 
 	MyTexture texture;
-	if (!InitializeTexture(&texture, "images/0x0ss-85.jpg"))
+	if (!InitializeTexture(&texture, "images/Block_-_M_79016763-075a-4d8f-a212-a1b57073b4eb_1024x1024.jpg"))
 		cout << "Program failed to intialize texture!" << endl;
 		
 	MyFrameBuffer blurFramebuffer;
@@ -135,14 +136,15 @@ int main(int argc, char *argv[])
         // call function to draw our scene
         Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
         Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
-        Render(&geometry, &cannyShader, cannyFramebuffer.texture, &cannyStorageFramebuffer);
         
-        Render(&geometry, &harrisShader, texture.textureID, &harrisStorageFramebuffer);
+        if(mode::mode == EDGE_DETECT_MODE){
+        	Render(&geometry, &cannyShader, cannyFramebuffer.texture, &nullFramebuffer);
+        }else{
+        	Render(&geometry, &cannyShader, cannyFramebuffer.texture, &cannyStorageFramebuffer);
+        	Render(&geometry, &harrisShader, texture.textureID, &harrisStorageFramebuffer);
+        	Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &nullFramebuffer);
+        }
         
-        Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &nullFramebuffer);
-        
-      //  Render(&geometry, &shader, extraFramebuffer.texture, &nullFramebuffer);
-
         // scene is rendered to the back buffer, so swap to front for display
         glfwSwapBuffers(window);
 
