@@ -14,7 +14,7 @@ in vec2 Textcoord;
 // first output is mapped to the framebuffer's colour index by default
 out vec4 FragmentColour;
 
-layout(location=3) uniform float place_holder;
+layout(location=3) uniform float harris_threshold=1.3;
 
 uniform sampler2D TextureImage;
 
@@ -35,7 +35,7 @@ void main(void)
 		}
 	}
 	FragmentColour.w=1;
-	if(FragmentColour.x+FragmentColour.y+FragmentColour.z<1.3){
+	if(FragmentColour.x+FragmentColour.y+FragmentColour.z<harris_threshold){
 		FragmentColour.xyz=vec3(0);
 	}else{
 		FragmentColour.xyz=vec3(1);

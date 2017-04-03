@@ -37,7 +37,15 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, MyFrameBuffe
 	glBindTexture(GL_TEXTURE_2D, texture);
     glUniform1i(glGetUniformLocation(shader->program, "TextureImage"), 0);
     
-    glUniform1f(3, shaders::canny_threshold);
+    auto u=glGetUniformLocation(shader->program, "canny_threshold");
+    if(u!=-1){
+    	glUniform1f(u, shaders::canny_threshold);
+    }
+    
+    u=glGetUniformLocation(shader->program, "harris_threshold");
+    if(u!=-1){
+    	glUniform1f(u, shaders::harris_threshold);
+    }
     
     glDrawArrays(GL_TRIANGLES, 0, geometry->elementCount);
 
