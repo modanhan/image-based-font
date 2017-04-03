@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
         cout << "Program failed to intialize geometry!" << endl;
 
 	MyTexture texture;
-	if (!InitializeTexture(&texture, "images/Block_-_M_79016763-075a-4d8f-a212-a1b57073b4eb_1024x1024.jpg"))
+	if (!InitializeTexture(&texture, "images/0x0ss-85.jpg"))
 		cout << "Program failed to intialize texture!" << endl;
 		
 	MyFrameBuffer blurFramebuffer;
