@@ -53,10 +53,13 @@ int main(int argc, char *argv[])
 
     // set keyboard callback function and make our context current (active)
     glfwSetKeyCallback(window, KeyCallback);
+    glfwSetScrollCallback(window, scroll_callback);
     glfwMakeContextCurrent(window);
 
     // query and print out information about our OpenGL environment
     QueryGLVersion();
+    
+	init_input();
 
     // call function to load and compile shader programs
     MyShader shader;

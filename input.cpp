@@ -1,5 +1,24 @@
 #include "input.h"
 
+#include "mode.h"
+#include "shaders.h"
+
+#include <iostream>
+using namespace std;
+
+void init_input(){
+	cout<<"\n\n\n\n\n";
+}
+
+void print_debug(){
+	cout<<"\e[A\e[A\e[A\e[A";
+	cout<<"======================================\n";
+	// spaces here are for writing over existing characters
+ 	cout<<"Edge detection threshold:\t"<<shaders::canny_threshold<<"        \n";
+ 	cout<<"        \n";
+	cout<<"======================================\n";
+}
+
 // handles keyboard input events
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -7,3 +26,10 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	if(mode::mode == EDGE_DETECT_MODE){
+		shaders::canny_threshold += MODIFY_EPS*yoffset;
+	}
+	print_debug();
+}
