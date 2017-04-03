@@ -8,6 +8,7 @@
 using namespace std;
 
 #include <Magick++.h>
+#include "shaders.h"
 
 using namespace glm;
 
@@ -35,6 +36,8 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, MyFrameBuffe
     glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
     glUniform1i(glGetUniformLocation(shader->program, "TextureImage"), 0);
+    
+    glUniform1f(3, shaders::canny_threshold);
     
     glDrawArrays(GL_TRIANGLES, 0, geometry->elementCount);
 
@@ -295,12 +298,12 @@ void BufferGeometry(MyGeometry *geometry){
         { 1.0, 1.0, 1.0 }
     };
 	const GLfloat textcoords[][2] = {
-        { 0., 1. },
-        {  1., 0. },
-        {  0., 0. },
-        { 0., 1. },
+        { 0., 0. },
         {  1., 1. },
-        {  1., 0. }
+        {  0., 1. },
+        { 0., 0. },
+        {  1., 0. },
+        {  1., 1. }
     };
     geometry->elementCount = 6;
     

@@ -6,12 +6,15 @@
 // ==========================================================================
 #version 410
 
+#extension GL_ARB_explicit_uniform_location : enable
 // interpolated colour received from vertex stage
 in vec3 Colour;
 in vec2 Textcoord;
 
 // first output is mapped to the framebuffer's colour index by default
 out vec4 FragmentColour;
+
+layout(location=3) uniform float place_holder;
 
 uniform sampler2D TextureImage;
 

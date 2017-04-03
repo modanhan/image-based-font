@@ -135,9 +135,9 @@ int main(int argc, char *argv[])
         
         Render(&geometry, &harrisShader, texture.textureID, &harrisStorageFramebuffer);
         
-        Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &extraFramebuffer);
+        Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &nullFramebuffer);
         
-        Render(&geometry, &shader, extraFramebuffer.texture, &nullFramebuffer);
+      //  Render(&geometry, &shader, extraFramebuffer.texture, &nullFramebuffer);
 
         // scene is rendered to the back buffer, so swap to front for display
         glfwSwapBuffers(window);
