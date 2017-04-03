@@ -90,6 +90,5 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint, MyFrameBuffer*);
 void Render(MyGeometry *geometry, MyShader *shader, GLuint, GLuint, MyFrameBuffer*);
 
 void ErrorCallback(int error, const char* description);
-void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void BufferGeometry(MyGeometry *geometry);
 }

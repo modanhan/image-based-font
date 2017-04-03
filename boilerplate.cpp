@@ -17,6 +17,7 @@
 #include <algorithm>
 
 #include "graphics.h"
+#include "input.h"
 
 using namespace std;
 using namespace glm;
