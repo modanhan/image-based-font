@@ -30,7 +30,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
     if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
-    	mode::mode++;
+    	mode::advance();
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)

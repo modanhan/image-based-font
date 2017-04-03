@@ -16,13 +16,15 @@ out vec4 FragmentColour;
 uniform sampler2D TextureImage;
 uniform sampler2D TextureImage1;
 
+uniform int extend=10;
+
 void main(void)
 {
 	vec2 size=textureSize(TextureImage, 0).xy;
 	
     FragmentColour = vec4(texture(TextureImage, Textcoord).xyz, 1.0);
     FragmentColour.x=0;
-    for(int i=-10;i<10;i++) FragmentColour += vec4(texture(TextureImage1, Textcoord+vec2(i/size.x,0)).xyz, 1.0);
-    for(int i=-10;i<10;i++) FragmentColour += vec4(texture(TextureImage1, Textcoord+vec2(0,i/size.y)).xyz, 1.0);
+    for(int i=-extend;i<=extend;i++) FragmentColour += vec4(texture(TextureImage1, Textcoord+vec2(i/size.x,0)).xyz, 1.0);
+    for(int i=-extend;i<=extend;i++) FragmentColour += vec4(texture(TextureImage1, Textcoord+vec2(0,i/size.y)).xyz, 1.0);
     FragmentColour.w=0;
 }

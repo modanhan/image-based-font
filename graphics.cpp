@@ -80,6 +80,11 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, GLuint textu
 	glBindTexture(GL_TEXTURE_2D, texture1);
     glUniform1i(glGetUniformLocation(shader->program, "TextureImage1"), 1);
     
+    auto u=glGetUniformLocation(shader->program, "extend");
+    if(u!=-1){
+    	glUniform1i(u, shaders::corner_extend);
+    }
+    
     glDrawArrays(GL_TRIANGLES, 0, geometry->elementCount);
 
     // reset state to default (no shader or geometry bound)
