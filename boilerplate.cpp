@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
         	Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
         	Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
         	Render(&geometry, &cannyShader, cannyFramebuffer.texture, &nullFramebuffer);
-        }else if(mode::mode <= MERGE_CORNER_MODE){
+        }else if(mode::mode <= ERASE_DRAW_CORNER_MODE){
         	Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
         	Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
         	Render(&geometry, &cannyShader, cannyFramebuffer.texture, &cannyStorageFramebuffer);
