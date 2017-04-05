@@ -25,8 +25,6 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, MyFrameBuffe
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
 	glBindTexture(GL_TEXTURE_2D, framebuffer->texture);
 	
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
 
     // bind our shader program and the vertex array object containing our
     // scene geometry, then tell OpenGL to draw our geometry
@@ -64,8 +62,6 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint texture, GLuint textu
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->fbo);
 	glBindTexture(GL_TEXTURE_2D, framebuffer->texture);
 	
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
 
     // bind our shader program and the vertex array object containing our
     // scene geometry, then tell OpenGL to draw our geometry

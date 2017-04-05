@@ -134,12 +134,16 @@ int main(int argc, char *argv[])
     while (!glfwWindowShouldClose(window))
     {
         // call function to draw our scene
-        Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
-        Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
-        
+        glClearColor(0.0, 0.0, 0.0, 1.0);
+    	glClear(GL_COLOR_BUFFER_BIT);
+    	
         if(mode::mode == EDGE_DETECT_MODE){
+        	Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
+        	Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
         	Render(&geometry, &cannyShader, cannyFramebuffer.texture, &nullFramebuffer);
-        }else{
+        }else if(mode::mode <= MERGE_CORNER_MODE){
+        	Render(&geometry, &blurShader, texture.textureID, &blurFramebuffer);
+        	Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
         	Render(&geometry, &cannyShader, cannyFramebuffer.texture, &cannyStorageFramebuffer);
         	Render(&geometry, &harrisShader, texture.textureID, &harrisStorageFramebuffer);
         	Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &nullFramebuffer);
