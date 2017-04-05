@@ -5,7 +5,8 @@
 
 namespace point_geometry{
 
-	graphics::MyGeometry point_geometry;
+	extern graphics::MyGeometry point_geometry;
 	
 	void render();
+	void generate();
 }
