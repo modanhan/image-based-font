@@ -13,6 +13,8 @@
 #define COLOUR_LOCATION 1
 #define TEXTCOORD_LOCATION 2
 
+extern int window_width, window_height;
+
 namespace graphics{
 // --------------------------------------------------------------------------
 // OpenGL utility and support function prototypes

@@ -12,6 +12,8 @@ using namespace std;
 
 using namespace glm;
 
+int window_width = 1024, window_height = 1024;
+
 namespace graphics{
 
 

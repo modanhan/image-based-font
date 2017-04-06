@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    window = glfwCreateWindow(1024, 1024, "Image Based Font Generator", 0, 0);
+    window = glfwCreateWindow(window_width, window_height, "Image Based Font Generator", 0, 0);
     if (!window) {
         cout << "Program failed to create GLFW window, TERMINATING" << endl;
         glfwTerminate();
@@ -109,23 +109,23 @@ int main(int argc, char *argv[])
 		cout << "Program failed to intialize texture!" << endl;
 		
 	MyFrameBuffer blurFramebuffer;
-	if (!InitializeFrameBuffer(&blurFramebuffer, vec2(1024), 1))
+	if (!InitializeFrameBuffer(&blurFramebuffer, vec2(window_width, window_height), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
 		
 	MyFrameBuffer cannyFramebuffer;
-	if (!InitializeFrameBuffer(&cannyFramebuffer, vec2(1024), 1))
+	if (!InitializeFrameBuffer(&cannyFramebuffer, vec2(window_width, window_height), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
 		
 	MyFrameBuffer cannyStorageFramebuffer;
-	if (!InitializeFrameBuffer(&cannyStorageFramebuffer, vec2(1024), 1))
+	if (!InitializeFrameBuffer(&cannyStorageFramebuffer, vec2(window_width, window_height), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
 		
 	MyFrameBuffer harrisStorageFramebuffer;
-	if (!InitializeFrameBuffer(&harrisStorageFramebuffer, vec2(1024), 1))
+	if (!InitializeFrameBuffer(&harrisStorageFramebuffer, vec2(window_width, window_height), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
 		
 	MyFrameBuffer extraFramebuffer;
-	if (!InitializeFrameBuffer(&extraFramebuffer, vec2(1024), 1))
+	if (!InitializeFrameBuffer(&extraFramebuffer, vec2(window_width, window_height), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
 	
 	MyFrameBuffer nullFramebuffer;
