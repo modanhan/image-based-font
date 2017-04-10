@@ -135,6 +135,8 @@ namespace point_geometry{
 				if(g[i][j]==4)g[i][j]=2;
 			}
 		}
+		
+		vector<ii> ansv;
 	
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
@@ -143,6 +145,7 @@ namespace point_geometry{
 				vector<vector<int>> r(width, vector<int>(height,0));
 				queue<ii> q;
 				q.push(ii(i,j));
+				map<ii,ii> p;
 				while(!q.empty()){
 					ii t=q.front();q.pop();
 					for(int k=0;k<8;k++){
@@ -151,6 +154,7 @@ namespace point_geometry{
 						if(r[d.first][d.second])continue;
 						if(g[d.first][d.second]==0)continue;
 						r[d.first][d.second]=1;
+						p[d]=t;
 						q.push(d);
 					}
 				}
@@ -158,7 +162,6 @@ namespace point_geometry{
 				// such that this corner can not reach
 				// then run bfs to find path to that pixel
 				
-				map<ii,ii> p;
 				while(1){
 				q=queue<ii>();
 				q.push(ii(i,j));
@@ -184,15 +187,11 @@ namespace point_geometry{
 				pixel_found:
 				while(1){
 					if(ans.first==i&&ans.second==j)break;
-					if(g[ans.first][ans.second]==0)
-						g[ans.first][ans.second]=3;
-					else if(g[ans.first][ans.second]==2)
-						g[ans.first][ans.second]=4;
+					ansv.push_back(ans);
 					if(p.find(ans)==p.end()){break;}
 					ans=p[ans];
-					cout<<ans.first<<' '<<ans.second<<endl;
-				//	break;
 				}
+				
 				q.push(ii(i,j));
 				while(!q.empty()){
 					ii t=q.front();q.pop();
@@ -202,12 +201,15 @@ namespace point_geometry{
 						if(r[d.first][d.second])continue;
 						if(g[d.first][d.second]==0)continue;
 						r[d.first][d.second]=1;
+						p[d]=t;
 						q.push(d);
 					}
 				}
 				}
 			}
 		}
+		
+		for(ii x:ansv)g[x.first][x.second]=g[x.first][x.second]==0?3:4;
 		generate();
 	}
 	
