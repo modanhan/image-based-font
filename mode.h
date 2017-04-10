@@ -6,6 +6,7 @@
 #define GENERATE_MODE 3
 #define CORNER_MERGE_MODE 4
 #define CORNER_CONNECT_MODE 5
+#define EDGE_REMOVE_MODE 6
 
 namespace mode{
 	void advance();

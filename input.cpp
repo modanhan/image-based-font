@@ -45,6 +45,10 @@ void print_mode_debug(){
 		cout<<"Max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
 		cout<<"======================================\n";
 	}
+	if(mode::mode==EDGE_REMOVE_MODE){
+		cout<<"Removing edges\n";
+		cout<<"======================================\n";
+	}
 }
 
 

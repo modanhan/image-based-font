@@ -20,6 +20,9 @@ namespace mode{
 		if(mode==CORNER_CONNECT_MODE){
 			point_geometry::connect_corner();
 		}
+		if(mode==CORNER_CONNECT_MODE){
+			point_geometry::edge_remove();
+		}
 		print_mode_debug();
 	}
 }

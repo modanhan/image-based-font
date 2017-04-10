@@ -199,7 +199,9 @@ namespace point_geometry{
 		generate();
 	}
 	
+	void edge_remove(){
 	
+	}
 	
 	
 	

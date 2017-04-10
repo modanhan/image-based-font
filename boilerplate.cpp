@@ -156,6 +156,8 @@ int main(int argc, char *argv[])
 	        point_geometry::render();
         }else if(mode::mode == CORNER_CONNECT_MODE){
 	        point_geometry::render();
+        }else if(mode::mode == EDGE_REMOVE_MODE){
+	        point_geometry::render();
         
         }
         
