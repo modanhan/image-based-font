@@ -17,7 +17,7 @@ namespace point_geometry{
 	
 	vector<vector<int>> g;
 	
-	int corner_connect_distance = 2;
+	int corner_connect_distance = 4;
 	
 	void init(){
 		InitializeShaders(&shader, "point_vertex.glsl", "point_fragment.glsl");
@@ -129,7 +129,7 @@ namespace point_geometry{
 	
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
-				if(g[i][j]==3)g[i][j]=0;
+				if(g[i][j]==3)g[i][j]=2;
 			}
 		}
 	
@@ -154,8 +154,10 @@ namespace point_geometry{
 				// run bfs, find a pixels within corner_connect_distance
 				// such that this corner can not reach
 				// then run bfs to find path to that pixel
+				while(1){
 				q=queue<ii>();
 				q.push(ii(i,j));
+				ii ans;
 				while(!q.empty()){
 					ii t=q.front();q.pop();
 					for(int k=0;k<8;k++){
@@ -165,9 +167,15 @@ namespace point_geometry{
 						if((d.first-i)*(d.first-i)+(d.second-j)*(d.second-j)
 						>corner_connect_distance)continue;
 						r[d.first][d.second]=1;
-						g[d.first][d.second]=3;
+						
+						if(g[d.first][d.second]==2){ans=d;goto pixel_found;}
+						
+						r[d.first][d.second]=1;
 						q.push(d);
 					}
+				}
+				break;
+				pixel_found:g[ans.first][ans.second]=3;
 				}
 			}
 		}
