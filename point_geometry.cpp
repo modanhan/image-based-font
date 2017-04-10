@@ -1,8 +1,12 @@
 #include "point_geometry.h"
 #include <vector>
 #include <iostream>
+#include <queue>
+#include <utility>
 using namespace std;
 using namespace glm;
+
+typedef pair<int,int> ii;
 
 namespace point_geometry{
 
@@ -15,6 +19,7 @@ namespace point_geometry{
 	
 	void init(){
 		InitializeShaders(&shader, "point_vertex.glsl", "point_fragment.glsl");
+		InitializeGeometry(&geometry);
 	}
 	
 	// fills in g
@@ -58,7 +63,6 @@ namespace point_geometry{
 				vertices.push_back(a);
 			}
 		}
-		InitializeGeometry(&geometry);
 		geometry.elementCount = vertices.size();
 
 		glBindBuffer(GL_ARRAY_BUFFER, geometry.vertexBuffer);
@@ -81,4 +85,71 @@ namespace point_geometry{
     
  	   graphics::CheckGLErrors();
 	}
+	
+	// =========================================================================
+	// bfs functions
+	
+	int DX[] = {1,1,0,-1,-1,-1,0,1};
+	int DY[] = {0,1,1,1,0,-1,-1,-1};
+	
+	void merge_corner(){
+		vector<vector<int>> v(width, vector<int>(height,0));
+		
+		for(int i=0;i<width;i++){
+			for(int j=0;j<height;j++){
+				if(v[i][j])continue;
+				v[i][j]=1;
+				if(g[i][j]!=1)continue;
+				// run bfs
+				queue<ii> q;
+				q.push(ii(i,j));
+				while(!q.empty()){
+					ii t=q.front();q.pop();
+					g[t.first][t.second]=0;
+					v[t.first][t.second]=1;
+					for(int k=0;k<8;k++){
+						ii d(i+DX[k], j+DY[k]);
+						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
+						if(v[d.first][d.second])continue;
+						if(g[d.first][d.second]!=1)continue;
+						q.push(d);
+					}
+				}
+				g[i][j]=1;
+			}
+		}
+		generate();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

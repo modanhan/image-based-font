@@ -28,7 +28,7 @@ void print_mode_debug(){
 		cout<<"======================================\n";
 	}
 	if(mode::mode==CORNER_MERGE_MODE){
-		cout<<"Erasing corners\n";
+		cout<<"Merging corners\n";
 		cout<<"======================================\n";
 	}
 }

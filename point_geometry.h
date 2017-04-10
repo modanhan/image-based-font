@@ -11,4 +11,5 @@ namespace point_geometry{
 	void render();
 	void generate();
 	void readTexture(GLuint texture);
+	void merge_corner();
 }

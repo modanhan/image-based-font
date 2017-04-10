@@ -15,7 +15,7 @@ namespace mode{
         	point_geometry::generate();
         }
 		if(mode==CORNER_MERGE_MODE){
-			
+			point_geometry::merge_corner();
 		}
 		print_mode_debug();
 	}
