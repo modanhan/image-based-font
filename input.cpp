@@ -19,7 +19,7 @@ if(mode::mode<=CORNER_DETECT_MODE){
  	cout<<"Corner detection threshold:\t"<<shaders::harris_threshold<<"                \n";
 	cout<<"======================================\n";
 }
-if(mode::mode==CORNER_CONNECT_MODE){
+if(mode::mode==CORNER_CONNECT_MODE){return;
 	cout<<"\e[A\e[A";
 		cout<<"Max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
 	cout<<"======================================\n";

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <queue>
 #include <utility>
+#include <map>
+
 using namespace std;
 using namespace glm;
 
@@ -57,7 +59,7 @@ namespace point_geometry{
 					colors.push_back(vec3(1,1,1));
 				}else if(g[i][j]==2){
 					colors.push_back(vec3(0,0,1));
-				}else if(g[i][j]==3){
+				}else if(g[i][j]==3||g[i][j]==4){
 					colors.push_back(vec3(0,1,0));
 				}else continue;
 				vec2 a((float)j/height,(float)i/width);
@@ -129,7 +131,8 @@ namespace point_geometry{
 	
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
-				if(g[i][j]==3)g[i][j]=2;
+				if(g[i][j]==3)g[i][j]=0;
+				if(g[i][j]==4)g[i][j]=2;
 			}
 		}
 	
@@ -154,6 +157,8 @@ namespace point_geometry{
 				// run bfs, find a pixels within corner_connect_distance
 				// such that this corner can not reach
 				// then run bfs to find path to that pixel
+				
+				map<ii,ii> p;
 				while(1){
 				q=queue<ii>();
 				q.push(ii(i,j));
@@ -166,16 +171,40 @@ namespace point_geometry{
 						if(r[d.first][d.second])continue;
 						if((d.first-i)*(d.first-i)+(d.second-j)*(d.second-j)
 						>corner_connect_distance)continue;
+						
 						r[d.first][d.second]=1;
+						p[d]=t;
 						
 						if(g[d.first][d.second]==2){ans=d;goto pixel_found;}
 						
-						r[d.first][d.second]=1;
 						q.push(d);
 					}
 				}
 				break;
-				pixel_found:g[ans.first][ans.second]=3;
+				pixel_found:
+				while(1){
+					if(ans.first==i&&ans.second==j)break;
+					if(g[ans.first][ans.second]==0)
+						g[ans.first][ans.second]=3;
+					else if(g[ans.first][ans.second]==2)
+						g[ans.first][ans.second]=4;
+					if(p.find(ans)==p.end()){break;}
+					ans=p[ans];
+					cout<<ans.first<<' '<<ans.second<<endl;
+				//	break;
+				}
+				q.push(ii(i,j));
+				while(!q.empty()){
+					ii t=q.front();q.pop();
+					for(int k=0;k<8;k++){
+						ii d(t.first+DX[k], t.second+DY[k]);
+						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
+						if(r[d.first][d.second])continue;
+						if(g[d.first][d.second]==0)continue;
+						r[d.first][d.second]=1;
+						q.push(d);
+					}
+				}
 				}
 			}
 		}
