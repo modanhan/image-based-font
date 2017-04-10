@@ -19,6 +19,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "mode.h"
+#include "point_geometry.h"
 
 using namespace std;
 using namespace glm;
@@ -98,6 +99,7 @@ int main(int argc, char *argv[])
         cout << "Program could not initialize shaders, TERMINATING" << endl;
         return -1;
     }
+    point_geometry::init();
     
     // call function to create and fill buffers with geometry data
     MyGeometry geometry;
@@ -125,7 +127,7 @@ int main(int argc, char *argv[])
 		cout << "Program failed to intialize frame buffer!" << endl;
 		
 	MyFrameBuffer extraFramebuffer;
-	if (!InitializeFrameBuffer(&extraFramebuffer, vec2(window_width, window_height), 1))
+	if (!InitializeFrameBuffer(&extraFramebuffer, vec2(window_width, window_height), 0))
 		cout << "Program failed to intialize frame buffer!" << endl;
 	
 	MyFrameBuffer nullFramebuffer;
@@ -146,7 +148,11 @@ int main(int argc, char *argv[])
         	Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
         	Render(&geometry, &cannyShader, cannyFramebuffer.texture, &cannyStorageFramebuffer);
         	Render(&geometry, &harrisShader, texture.textureID, &harrisStorageFramebuffer);
-        	Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &nullFramebuffer);
+        	Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &extraFramebuffer);
+        	Render(&geometry, &shader, extraFramebuffer.texture, &nullFramebuffer);
+        }else if(mode::mode == GENERATE_MODE){
+        	point_geometry::readTexture(extraFramebuffer.texture);
+        	mode::advance();
         }
         
         // scene is rendered to the back buffer, so swap to front for display
