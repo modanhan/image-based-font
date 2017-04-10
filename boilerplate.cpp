@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
         cout << "Program could not initialize shaders, TERMINATING" << endl;
         return -1;
     }
+    
     point_geometry::init();
     
     // call function to create and fill buffers with geometry data
@@ -152,7 +153,10 @@ int main(int argc, char *argv[])
         	Render(&geometry, &shader, extraFramebuffer.texture, &nullFramebuffer);
         }else if(mode::mode == GENERATE_MODE){
         	point_geometry::readTexture(extraFramebuffer.texture);
+        	point_geometry::generate();
         	mode::advance();
+        }else{
+	        point_geometry::render();
         }
         
         // scene is rendered to the back buffer, so swap to front for display

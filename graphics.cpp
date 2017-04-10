@@ -221,11 +221,10 @@ GLuint LinkProgram(GLuint vertexShader, GLuint fragmentShader)
     return programObject;
 }
 
-// load, compile, and link shaders, returning true if successful
-bool InitializeShaders(MyShader *shader, const char* fragment)
+bool InitializeShaders(MyShader *shader, const char* vertex, const char* fragment)
 {
     // load shader source from files
-    string vertexSource = LoadSource("vertex.glsl");
+    string vertexSource = LoadSource(vertex);
     string fragmentSource = LoadSource(fragment);
     if (vertexSource.empty() || fragmentSource.empty()) return false;
 
@@ -238,6 +237,12 @@ bool InitializeShaders(MyShader *shader, const char* fragment)
 
     // check for OpenGL errors and return false if error occurred
     return !CheckGLErrors();
+}
+
+// load, compile, and link shaders, returning true if successful
+bool InitializeShaders(MyShader *shader, const char* fragment)
+{
+	return InitializeShaders(shader, "vertex.glsl", fragment);
 }
 
 // deallocate shader-related objects

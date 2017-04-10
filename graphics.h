@@ -79,6 +79,7 @@ struct MyFrameBuffer {
 };
 
 bool InitializeShaders(MyShader *shader, const char* fragment);
+bool InitializeShaders(MyShader *shader, const char* vertex, const char* fragment);
 void DestroyShaders(MyShader *shader);
 bool InitializeGeometry(MyGeometry *geometry);
 void DestroyGeometry(MyGeometry *geometry);

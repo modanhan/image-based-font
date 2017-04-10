@@ -8,13 +8,13 @@ namespace point_geometry{
 
 	int width,height;
 
-	graphics::MyGeometry point_geometry;
+	graphics::MyGeometry geometry;
 	graphics::MyShader shader;
 	
 	vector<vector<int>> g;
 	
 	void init(){
-	
+		InitializeShaders(&shader, "point_vertex.glsl", "point_fragment.glsl");
 	}
 	
 	// fills in g
@@ -32,8 +32,6 @@ namespace point_geometry{
 			for(int j=0;j<height;j++){
 				if(pixels[i*width+j]==0){
 					g[i][j]=0;
-				}else if(pixels[i*width+j]>1<<7){
-					g[i][j]=2;
 				}else{
 					g[i][j]=1;
 				}
@@ -47,21 +45,32 @@ namespace point_geometry{
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
 				if(g[i][j]==1){
-					vertices.push_back(vec2((float)i/width,(float)j/height));
 					colors.push_back(vec3(0,0,1));
 				}else if(g[i][j]==2){
-					vertices.push_back(vec2((float)i/width,(float)j/height));
 					colors.push_back(vec3(1,1,1));
-				}
+				}else continue;
+				vec2 a((float)i/width,(float)j/height);
+				a/=vec2(2);
+				vertices.push_back(a);
 			}
 		}
+		InitializeGeometry(&geometry);
+		geometry.elementCount = vertices.size();
+
+		glBindBuffer(GL_ARRAY_BUFFER, geometry.vertexBuffer);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(vec2), &vertices[0], GL_STATIC_DRAW);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, geometry.colourBuffer);
+		glBufferData(GL_ARRAY_BUFFER, colors.size()*sizeof(vec3), &colors[0], GL_STATIC_DRAW);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	
 	void render(){
  	   glUseProgram(shader.program);
- 	   glBindVertexArray(point_geometry.vertexArray);
+ 	   glBindVertexArray(geometry.vertexArray);
     
- 	   glDrawArrays(GL_POINTS, 0, point_geometry.elementCount);
+ 	   glDrawArrays(GL_POINTS, 0, geometry.elementCount);
 
  	   glBindVertexArray(0);
  	   glUseProgram(0);
