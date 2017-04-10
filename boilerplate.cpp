@@ -127,8 +127,7 @@ int main(int argc, char *argv[])
 	if (!InitializeFrameBuffer(&harrisStorageFramebuffer, vec2(window_width, window_height), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
 		
-	MyFrameBuffer extraFramebuffer;
-	if (!InitializeFrameBuffer(&extraFramebuffer, vec2(window_width, window_height), 0))
+	if (!InitializeFrameBuffer(&graphics::extraFramebuffer, vec2(window_width, window_height), 0))
 		cout << "Program failed to intialize frame buffer!" << endl;
 	
 	MyFrameBuffer nullFramebuffer;
@@ -149,13 +148,11 @@ int main(int argc, char *argv[])
         	Render(&geometry, &sobelShader, blurFramebuffer.texture, &cannyFramebuffer);
         	Render(&geometry, &cannyShader, cannyFramebuffer.texture, &cannyStorageFramebuffer);
         	Render(&geometry, &harrisShader, texture.textureID, &harrisStorageFramebuffer);
-        	Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &extraFramebuffer);
-        	Render(&geometry, &shader, extraFramebuffer.texture, &nullFramebuffer);
+        	Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &graphics::extraFramebuffer);
+        	Render(&geometry, &shader, graphics::extraFramebuffer.texture, &nullFramebuffer);
         }else if(mode::mode == GENERATE_MODE){
-        	point_geometry::readTexture(extraFramebuffer.texture);
-        	point_geometry::generate();
-        	mode::advance();
-        }else{
+	        point_geometry::render();
+        }else if(mode::mode == CORNER_MERGE_MODE){
 	        point_geometry::render();
         }
         

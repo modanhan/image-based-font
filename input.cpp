@@ -22,6 +22,16 @@ void init_input(){
 	print_debug();
 }
 
+void print_mode_debug(){
+	if(mode::mode==GENERATE_MODE){
+		cout<<"Texture sampled, point geometry generated\n";
+		cout<<"======================================\n";
+	}
+	if(mode::mode==CORNER_MERGE_MODE){
+		cout<<"Erasing corners\n";
+		cout<<"======================================\n";
+	}
+}
 
 
 // handles keyboard input events

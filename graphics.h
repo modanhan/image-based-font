@@ -94,4 +94,7 @@ void Render(MyGeometry *geometry, MyShader *shader, GLuint, GLuint, MyFrameBuffe
 
 void ErrorCallback(int error, const char* description);
 void BufferGeometry(MyGeometry *geometry);
+
+
+extern MyFrameBuffer extraFramebuffer;
 }
