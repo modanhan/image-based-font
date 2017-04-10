@@ -7,6 +7,8 @@ namespace point_geometry{
 
 	extern graphics::MyGeometry point_geometry;
 	
+	extern int corner_connect_distance;
+	
 	void init();
 	void render();
 	void generate();

@@ -3,11 +3,14 @@
 #include "mode.h"
 #include "shaders.h"
 
+#include "point_geometry.h"
+
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
 void print_debug(){
+if(mode::mode<=CORNER_DETECT_MODE){
 	cout<<"\e[A\e[A\e[A\e[A";
 	cout<<"======================================\n";
 	
@@ -15,6 +18,12 @@ void print_debug(){
  	cout<<"Edge detection threshold:\t"<<shaders::canny_threshold<<"                \n";
  	cout<<"Corner detection threshold:\t"<<shaders::harris_threshold<<"                \n";
 	cout<<"======================================\n";
+}
+if(mode::mode==CORNER_CONNECT_MODE){
+	cout<<"\e[A\e[A";
+		cout<<"Max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
+	cout<<"======================================\n";
+}
 }
 
 void init_input(){
@@ -33,6 +42,7 @@ void print_mode_debug(){
 	}
 	if(mode::mode==CORNER_CONNECT_MODE){
 		cout<<"Connecting corners to edges\n";
+		cout<<"Max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
 		cout<<"======================================\n";
 	}
 }
@@ -57,6 +67,12 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	if(mode::mode == CORNER_DETECT_MODE){
 		shaders::harris_threshold += MODIFY_EPS*yoffset;
 		shaders::harris_threshold = max(shaders::harris_threshold, 0.0f);
+		print_debug();
+	}
+	if(mode::mode == CORNER_CONNECT_MODE){
+		point_geometry::corner_connect_distance+=(yoffset>0)?1:-1;
+		point_geometry::corner_connect_distance=max(min(point_geometry::corner_connect_distance,10),0);
+		point_geometry::connect_corner();
 		print_debug();
 	}
 }
