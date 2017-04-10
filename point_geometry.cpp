@@ -54,6 +54,7 @@ namespace point_geometry{
 				vec2 a((float)j/height,(float)i/width);
 				a*=vec2(2);
 				a-=vec2(1);
+				a.y*=-1;
 				vertices.push_back(a);
 			}
 		}

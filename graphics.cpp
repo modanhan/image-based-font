@@ -298,12 +298,12 @@ bool InitializeGeometry(MyGeometry *geometry)
 void BufferGeometry(MyGeometry *geometry){
 	    // three vertex positions and assocated colours of a triangle
     const GLfloat vertices[][2] = {
-        { -1., -1. },
-        {  1., 1. },
-        {  -1., 1. },
-        { -1., -1. },
+        { -1., 1. },
         {  1., -1. },
-        {  1., 1. }
+        {  -1., -1. },
+        { -1., 1. },
+        {  1., 1. },
+        {  1., -1. }
     };
     const GLfloat colours[][3] = {
         { 1.0, 1.0, 1.0 },
