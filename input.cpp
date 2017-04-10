@@ -24,11 +24,15 @@ void init_input(){
 
 void print_mode_debug(){
 	if(mode::mode==GENERATE_MODE){
-		cout<<"Texture sampled, point geometry generated\n";
+		cout<<"Point geometry generated\n";
 		cout<<"======================================\n";
 	}
 	if(mode::mode==CORNER_MERGE_MODE){
 		cout<<"Merging corners\n";
+		cout<<"======================================\n";
+	}
+	if(mode::mode==CORNER_CONNECT_MODE){
+		cout<<"Connecting corners to edges\n";
 		cout<<"======================================\n";
 	}
 }
@@ -48,10 +52,11 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	if(mode::mode == EDGE_DETECT_MODE){
 		shaders::canny_threshold += MODIFY_EPS*yoffset;
 		shaders::canny_threshold = max(shaders::canny_threshold, 0.0f);
+		print_debug();
 	}
 	if(mode::mode == CORNER_DETECT_MODE){
 		shaders::harris_threshold += MODIFY_EPS*yoffset;
 		shaders::harris_threshold = max(shaders::harris_threshold, 0.0f);
+		print_debug();
 	}
-	print_debug();
 }

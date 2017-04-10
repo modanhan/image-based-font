@@ -55,6 +55,8 @@ namespace point_geometry{
 					colors.push_back(vec3(1,1,1));
 				}else if(g[i][j]==2){
 					colors.push_back(vec3(0,0,1));
+				}else if(g[i][j]==3){
+					colors.push_back(vec3(0,1,0));
 				}else continue;
 				vec2 a((float)j/height,(float)i/width);
 				a*=vec2(2);
@@ -108,7 +110,7 @@ namespace point_geometry{
 					g[t.first][t.second]=0;
 					v[t.first][t.second]=1;
 					for(int k=0;k<8;k++){
-						ii d(i+DX[k], j+DY[k]);
+						ii d(t.first+DX[k], t.second+DY[k]);
 						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
 						if(v[d.first][d.second])continue;
 						if(g[d.first][d.second]!=1)continue;
@@ -121,7 +123,29 @@ namespace point_geometry{
 		generate();
 	}
 	
-	
+	void connect_corner(){
+		for(int i=0;i<width;i++){
+			for(int j=0;j<height;j++){
+				if(g[i][j]!=1)continue;
+				// run bfs, find all pixels this corner can reach
+				vector<vector<int>> r(width, vector<int>(height,0));
+				queue<ii> q;
+				q.push(ii(i,j));
+				while(!q.empty()){
+					ii t=q.front();q.pop();
+					for(int k=0;k<8;k++){
+						ii d(t.first+DX[k], t.second+DY[k]);
+						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
+						if(r[d.first][d.second])continue;
+						if(g[d.first][d.second]==0)continue;
+						r[d.first][d.second]=1;
+						q.push(d);
+					}
+				}
+			}
+		}
+		generate();
+	}
 	
 	
 	

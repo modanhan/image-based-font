@@ -154,6 +154,9 @@ int main(int argc, char *argv[])
 	        point_geometry::render();
         }else if(mode::mode == CORNER_MERGE_MODE){
 	        point_geometry::render();
+        }else if(mode::mode == CORNER_CONNECT_MODE){
+	        point_geometry::render();
+        
         }
         
         // scene is rendered to the back buffer, so swap to front for display
