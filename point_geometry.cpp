@@ -23,7 +23,7 @@ namespace point_geometry{
 		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
 		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
 
-		GLubyte pixels[width*height*4];
+		unsigned int pixels[width*height];
 		glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		
@@ -32,8 +32,10 @@ namespace point_geometry{
 			for(int j=0;j<height;j++){
 				if(pixels[i*width+j]==0){
 					g[i][j]=0;
-				}else{
+				}else if(pixels[i*width+j]>16776960){
 					g[i][j]=1;
+				}else{
+					g[i][j]=2;
 				}
 			}
 		}
@@ -45,12 +47,13 @@ namespace point_geometry{
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
 				if(g[i][j]==1){
-					colors.push_back(vec3(0,0,1));
-				}else if(g[i][j]==2){
 					colors.push_back(vec3(1,1,1));
+				}else if(g[i][j]==2){
+					colors.push_back(vec3(0,0,1));
 				}else continue;
-				vec2 a((float)i/width,(float)j/height);
-				a/=vec2(2);
+				vec2 a((float)j/height,(float)i/width);
+				a*=vec2(2);
+				a-=vec2(1);
 				vertices.push_back(a);
 			}
 		}
