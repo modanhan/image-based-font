@@ -126,6 +126,13 @@ namespace point_geometry{
 	}
 	
 	void connect_corner(){
+	
+		for(int i=0;i<width;i++){
+			for(int j=0;j<height;j++){
+				if(g[i][j]==3)g[i][j]=0;
+			}
+		}
+	
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
 				if(g[i][j]!=1)continue;
@@ -147,7 +154,20 @@ namespace point_geometry{
 				// run bfs, find a pixels within corner_connect_distance
 				// such that this corner can not reach
 				// then run bfs to find path to that pixel
-				
+				q=queue<ii>();
+				q.push(ii(i,j));
+				while(!q.empty()){
+					ii t=q.front();q.pop();
+					for(int k=0;k<8;k++){
+						ii d(t.first+DX[k], t.second+DY[k]);
+						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
+						if(r[d.first][d.second])continue;
+						if(abs(d.first-i)+abs(d.second-j)>corner_connect_distance)continue;
+						r[d.first][d.second]=1;
+						g[d.first][d.second]=3;
+						q.push(d);
+					}
+				}
 			}
 		}
 		generate();
