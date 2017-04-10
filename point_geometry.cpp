@@ -191,20 +191,6 @@ namespace point_geometry{
 					if(p.find(ans)==p.end()){break;}
 					ans=p[ans];
 				}
-				
-				q.push(ii(i,j));
-				while(!q.empty()){
-					ii t=q.front();q.pop();
-					for(int k=0;k<8;k++){
-						ii d(t.first+DX[k], t.second+DY[k]);
-						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
-						if(r[d.first][d.second])continue;
-						if(g[d.first][d.second]==0)continue;
-						r[d.first][d.second]=1;
-						p[d]=t;
-						q.push(d);
-					}
-				}
 				}
 			}
 		}
