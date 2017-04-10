@@ -71,7 +71,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	}
 	if(mode::mode == CORNER_CONNECT_MODE){
 		point_geometry::corner_connect_distance+=(yoffset>0)?1:-1;
-		point_geometry::corner_connect_distance=max(min(point_geometry::corner_connect_distance,10),0);
+		point_geometry::corner_connect_distance=max(min(point_geometry::corner_connect_distance,MAX_CONNECT_DISTANCE*MAX_CONNECT_DISTANCE),0);
 		point_geometry::connect_corner();
 		print_debug();
 	}

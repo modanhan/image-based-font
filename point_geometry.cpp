@@ -162,7 +162,8 @@ namespace point_geometry{
 						ii d(t.first+DX[k], t.second+DY[k]);
 						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
 						if(r[d.first][d.second])continue;
-						if(abs(d.first-i)+abs(d.second-j)>corner_connect_distance)continue;
+						if((d.first-i)*(d.first-i)+(d.second-j)*(d.second-j)
+						>corner_connect_distance)continue;
 						r[d.first][d.second]=1;
 						g[d.first][d.second]=3;
 						q.push(d);

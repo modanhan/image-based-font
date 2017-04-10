@@ -3,6 +3,7 @@
 #include "graphics.h"
 
 #define MODIFY_EPS 0.01
+#define MAX_CONNECT_DISTANCE 5
 
 void init_input();
 
