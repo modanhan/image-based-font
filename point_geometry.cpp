@@ -199,11 +199,27 @@ namespace point_geometry{
 		generate();
 	}
 	
+	vector<vector<int>> gv;
+	
 	void edge_remove(){
-	
+		for(int i=0;i<width;i++){
+			for(int j=0;j<height;j++){
+				if(g[i][j]>1)g[i][j]=2;
+			}
+		}
+		
+		gv.assign(width,vector<int>(height,0));
+		
+		for(int i=0;i<width;i++){
+			for(int j=0;j<height;j++){
+				// bfs on i,j to find shortest path to the next corner
+				// next corner can be this corner, except for cases of first round of bfs
+			}
+		}
+		
+		generate();
 	}
-	
-	
+
 	
 	
 	

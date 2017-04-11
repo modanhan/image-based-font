@@ -18,8 +18,10 @@ layout(location=3) uniform float harris_threshold=1.3;
 
 uniform sampler2D TextureImage;
 
-uniform	float mask[7]=float[](
-0.038735,	0.113085,	0.215007,	0.266346,	0.215007,	0.113085,	0.038735);
+float g(float x){
+	float t=3;
+	return 1/sqrt(2*3.1415926*t*t)*exp(-x*x/2/t/t);
+}
 
 void main(void)
 {
@@ -27,10 +29,12 @@ void main(void)
 	vec2 size=textureSize(TextureImage, 0).xy;
 	
 	vec3 c=texture(TextureImage, Textcoord).xyz;
-	for(int u=-3;u<=3;u++){
-		for(int v=-3;v<=3;v++){
-			float w=mask[u+3]*mask[v+3];
+	float ci=c.x+c.y+c.z;
+	for(int u=-7;u<=7;u++){
+		for(int v=-7;v<=7;v++){
+			float w=g(u)*g(v);
 			vec3 tc=texture(TextureImage, Textcoord+vec2(u/size.x,v/size.y)).xyz;
+			float tci=tc.x+tc.y+tc.z;
 			FragmentColour.xyz+=w*(tc-c)*(tc-c);
 		}
 	}
