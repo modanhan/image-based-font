@@ -146,8 +146,7 @@ namespace point_geometry{
 				map<ii,ii> p;
 
 				// run bfs, find a pixels within corner_connect_distance
-				// such that this corner can not reach
-				// then run bfs to find path to that pixel
+				// then find path to that pixel
 				
 				q=queue<ii>();
 				r[i][j]=1;
@@ -195,7 +194,6 @@ namespace point_geometry{
 	}
 	
 	void edge_remove(){
-		vector<vector<int>> v(width,vector<int>(height,0));
 		
 		vector<ii> ansv;
 		
@@ -205,6 +203,7 @@ namespace point_geometry{
 				// bfs on i,j to find shortest path to the next corner
 				// does not work on droplet edge case
 				// does not work on perfect smooth curve
+				vector<vector<int>> v(width,vector<int>(height,0));
 				
 				queue<ii> q;
 				map<ii,ii> p;
@@ -219,8 +218,8 @@ namespace point_geometry{
 						ii d(t.first+DX[k], t.second+DY[k]);
 						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
 						
-						// t can reach a corner
-						if(g[d.first][d.second]==1){tansv.push_back(t);continue;}
+						// t can reach a corner that's not self
+						if(g[d.first][d.second]==1&&(i!=d.first||j!=d.second)){tansv.push_back(t);continue;}
 						
 						if(v[d.first][d.second])continue;
 						if(g[d.first][d.second]==0)continue;
