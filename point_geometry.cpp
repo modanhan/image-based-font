@@ -137,35 +137,22 @@ namespace point_geometry{
 		}
 		
 		vector<ii> ansv;
+		vector<vector<int>> r(width, vector<int>(height,0));
 	
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
 				if(g[i][j]!=1)continue;
-				// run bfs, find all pixels this corner can reach
-				vector<vector<int>> r(width, vector<int>(height,0));
 				queue<ii> q;
-				q.push(ii(i,j));
 				map<ii,ii> p;
-				while(!q.empty()){
-					ii t=q.front();q.pop();
-					for(int k=0;k<8;k++){
-						ii d(t.first+DX[k], t.second+DY[k]);
-						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
-						if(r[d.first][d.second])continue;
-						if(g[d.first][d.second]==0)continue;
-						r[d.first][d.second]=1;
-						p[d]=t;
-						q.push(d);
-					}
-				}
+
 				// run bfs, find a pixels within corner_connect_distance
 				// such that this corner can not reach
 				// then run bfs to find path to that pixel
 				
-				while(1){
 				q=queue<ii>();
+				r[i][j]=1;
 				q.push(ii(i,j));
-				ii ans;
+				vector<ii> tansv;
 				while(!q.empty()){
 					ii t=q.front();q.pop();
 					for(int k=0;k<8;k++){
@@ -178,20 +165,19 @@ namespace point_geometry{
 						r[d.first][d.second]=1;
 						p[d]=t;
 						
-						if(g[d.first][d.second]==2){ans=d;goto pixel_found;}
-						
-						q.push(d);
+						if(g[d.first][d.second]==2){tansv.push_back(d);}
+						else q.push(d);
 					}
 				}
-				break;
-				pixel_found:
+				
+				for(ii ans:tansv)
 				while(1){
 					if(ans.first==i&&ans.second==j)break;
 					ansv.push_back(ans);
 					if(p.find(ans)==p.end()){break;}
 					ans=p[ans];
 				}
-				}
+				
 			}
 		}
 		
