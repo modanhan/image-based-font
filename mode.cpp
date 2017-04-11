@@ -33,7 +33,7 @@ namespace mode{
 			point_geometry::target_point_gen();
 		}
 		if(mode==TARGET_GEN_MODE){
-			curve_generation::init();
+			curve_generation::generate();
 		}
 		print_mode_debug();
 	}

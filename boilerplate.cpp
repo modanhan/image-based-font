@@ -63,6 +63,7 @@ int main(int argc, char *argv[])
     QueryGLVersion();
     
 	init_input();
+	curve_generation::init();
 
     // call function to load and compile shader programs
     MyShader shader;

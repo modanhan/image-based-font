@@ -6,8 +6,13 @@ namespace curve_generation{
 	bspline bspline1;
 	graphics::MyShader shader;
 
+	int control_points=9;
+
 	void init(){
 		InitializeShaders(&shader, "point_vertex.glsl", "point_fragment.glsl");
+	}
+	
+	void generate(){
 		bspline1.point.push_back(vec2(0.5));
 		bspline1.point.push_back(vec2(0.5,-0.5));
 		bspline1.point.push_back(vec2(-0.5));
