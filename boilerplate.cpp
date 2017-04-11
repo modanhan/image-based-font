@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
         cout << "Program failed to intialize geometry!" << endl;
 
 	MyTexture texture;
-	if (!InitializeTexture(&texture, "images/droplet.jpeg"))
+	if (!InitializeTexture(&texture, "images/m.jpg"))
 		cout << "Program failed to intialize texture!" << endl;
 		
 	MyFrameBuffer blurFramebuffer;
@@ -150,13 +150,7 @@ int main(int argc, char *argv[])
         	Render(&geometry, &harrisShader, texture.textureID, &harrisStorageFramebuffer);
         	Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &graphics::extraFramebuffer);
         	Render(&geometry, &shader, graphics::extraFramebuffer.texture, &nullFramebuffer);
-        }else if(mode::mode == GENERATE_MODE){
-	        point_geometry::render();
-        }else if(mode::mode == CORNER_MERGE_MODE){
-	        point_geometry::render();
-        }else if(mode::mode == CORNER_CONNECT_MODE){
-	        point_geometry::render();
-        }else if(mode::mode == EDGE_REMOVE_MODE){
+        }else if(mode::mode <= EDGE_REMOVE_MODE){
 	        point_geometry::render();
         
         }

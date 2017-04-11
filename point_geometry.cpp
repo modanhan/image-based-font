@@ -185,14 +185,16 @@ namespace point_geometry{
 		generate();
 	}
 	
-	
-	
-	void edge_remove(){
+	void edge_preview(){
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
 				if(g[i][j]>1)g[i][j]=2;
 			}
 		}
+		generate();
+	}
+	
+	void edge_remove(){
 		vector<vector<int>> v(width,vector<int>(height,0));
 		
 		vector<ii> ansv;

@@ -20,7 +20,12 @@ namespace mode{
 		if(mode==CORNER_CONNECT_MODE){
 			point_geometry::connect_corner();
 		}
+		if(mode==EDGE_PREVIEW_MODE){
+			point_geometry::edge_preview();
+		}
 		if(mode==EDGE_REMOVE_MODE){
+			// 2 pass for guaranteed excess edge removal
+			point_geometry::edge_remove();
 			point_geometry::edge_remove();
 		}
 		print_mode_debug();

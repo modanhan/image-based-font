@@ -16,4 +16,5 @@ namespace point_geometry{
 	void merge_corner();
 	void connect_corner();
 	void edge_remove();
+	void edge_preview();
 }
