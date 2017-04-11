@@ -4,6 +4,7 @@
 #include <queue>
 #include <utility>
 #include <map>
+#include <set>
 
 using namespace std;
 using namespace glm;
@@ -254,6 +255,7 @@ namespace point_geometry{
 
 	void target_point_gen(){
 		target_curves.clear();
+		vector<vector<ii>> t;
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
 				if(g[i][j]!=1)continue;
@@ -286,15 +288,34 @@ namespace point_geometry{
 					}
 				}
 				
-				target_curves.push_back(vector<vec2>());
 				
-				for(ii ans:tansv)
+				for(ii ans:tansv){
+				t.push_back(vector<ii>());
+				// find nearest corner
+				ii d;
+				for(int k=0;k<8;k++){
+					d=ii(ans.first+DX[k], ans.second+DY[k]);
+					if(g[d.first][d.second]==1)break;
+				}
+				t.back().push_back(d);
 				while(1){
-					if(ans.first==i&&ans.second==j)break;
-					target_curves.back().push_back(vec2(ans.first,ans.second));
+					t.back().push_back(ans);
 					if(p.find(ans)==p.end()){break;}
 					ans=p[ans];
 				}
+				}
+			}
+		}
+		
+		// filter out curves
+		set<pair<ii,ii>> st;
+		for(int i=0;i<t.size();i++){
+			if(st.count(pair<ii,ii>(t[i][0],t[i].back()))==0){
+				vector<vec2> v;
+				for(int j=0;j<t[i].size();j++)v.push_back(vec2(t[i][j].first, t[i][j].second));
+				target_curves.push_back(v);
+				st.insert(pair<ii,ii>(t[i][0],t[i].back()));
+				st.insert(pair<ii,ii>(t[i].back(),t[i][0]));
 			}
 		}
 	}
