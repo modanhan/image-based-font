@@ -2,6 +2,7 @@
 #include "shaders.h"
 #include "input.h"
 #include "point_geometry.h"
+#include "curve_generation.h"
 
 namespace mode{
 	int mode=0;
@@ -29,8 +30,10 @@ namespace mode{
 			point_geometry::edge_remove();
 		}
 		if(mode==TARGET_GEN_MODE){
-			// 2 pass for guaranteed excess edge removal
 			point_geometry::target_point_gen();
+		}
+		if(mode==TARGET_GEN_MODE){
+			curve_generation::init();
 		}
 		print_mode_debug();
 	}

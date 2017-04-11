@@ -20,6 +20,7 @@
 #include "input.h"
 #include "mode.h"
 #include "point_geometry.h"
+#include "curve_generation.h"
 
 using namespace std;
 using namespace glm;
@@ -152,7 +153,8 @@ int main(int argc, char *argv[])
         	Render(&geometry, &shader, graphics::extraFramebuffer.texture, &nullFramebuffer);
         }else if(mode::mode <= TARGET_GEN_MODE){
 	        point_geometry::render();
-        
+        }else if(mode::mode == CURVE_GEN_MODE){
+        	curve_generation::render();
         }
         
         // scene is rendered to the back buffer, so swap to front for display

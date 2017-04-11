@@ -33,6 +33,7 @@ float Bfast(bspline* spline, int k, int n, float x){
 }
 
 void initBSplineGeometry(bspline* spline){
+	InitializeGeometry(&spline->geometry);
     vector<vec2> vertices;
     vector<vec3> colors;
     int delta=0;
@@ -73,4 +74,5 @@ void initBSpine(bspline* spline){
 	for(unsigned int i=spline->degree;i<=spline->point.size();i++){
 		spline->knot[i]=(i-spline->degree)/(float)(spline->point.size()-spline->degree);
 	}
+	initBSplineGeometry(spline);
 }
