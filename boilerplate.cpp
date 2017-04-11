@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
         	Render(&geometry, &harrisShader, texture.textureID, &harrisStorageFramebuffer);
         	Render(&geometry, &additiveShader, cannyStorageFramebuffer.texture, harrisStorageFramebuffer.texture, &graphics::extraFramebuffer);
         	Render(&geometry, &shader, graphics::extraFramebuffer.texture, &nullFramebuffer);
-        }else if(mode::mode <= EDGE_REMOVE_MODE){
+        }else if(mode::mode <= TARGET_GEN_MODE){
 	        point_geometry::render();
         
         }

@@ -8,6 +8,7 @@
 #define CORNER_CONNECT_MODE 5
 #define EDGE_PREVIEW_MODE 6
 #define EDGE_REMOVE_MODE 7
+#define TARGET_GEN_MODE 8
 
 namespace mode{
 	void advance();

@@ -49,6 +49,11 @@ void print_mode_debug(){
 		cout<<"Removing edges\n";
 		cout<<"======================================\n";
 	}
+	if(mode::mode==TARGET_GEN_MODE){
+		cout<<"Generating target cuves, "<<point_geometry::target_curves.size()
+		<<" curves detected\n";
+		cout<<"======================================\n";
+	}
 }
 
 

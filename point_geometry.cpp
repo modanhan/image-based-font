@@ -249,7 +249,55 @@ namespace point_geometry{
 		generate();
 	}
 
-	
+	// v[i] = the i-th b-spline target
+	vector<vector<vec2>> target_curves;
+
+	void target_point_gen(){
+		target_curves.clear();
+		for(int i=0;i<width;i++){
+			for(int j=0;j<height;j++){
+				if(g[i][j]!=1)continue;
+				// bfs on i,j to find shortest path to the next corner
+				// does not work on droplet edge case
+				// does not work on perfect smooth curve
+				vector<vector<int>> v(width,vector<int>(height,0));
+				
+				queue<ii> q;
+				map<ii,ii> p;
+				vector<ii> tansv;
+				
+				q.push(ii(i,j));
+				v[i][j]=1;
+				
+				while(!q.empty()){
+					ii t=q.front();q.pop();
+					for(int k=0;k<8;k++){
+						ii d(t.first+DX[k], t.second+DY[k]);
+						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
+						
+						// t can reach a corner that's not self
+						if(g[d.first][d.second]==1&&(i!=d.first||j!=d.second)){tansv.push_back(t);continue;}
+						
+						if(v[d.first][d.second])continue;
+						if(g[d.first][d.second]==0)continue;
+						v[d.first][d.second]=1;
+						p[d]=t;
+						q.push(d);
+					}
+				}
+				
+				target_curves.push_back(vector<vec2>());
+				
+				for(ii ans:tansv)
+				while(1){
+					if(ans.first==i&&ans.second==j)break;
+					target_curves.back().push_back(vec2(ans.first,ans.second));
+					if(p.find(ans)==p.end()){break;}
+					ans=p[ans];
+				}
+			}
+		}
+	}
 	
 	
 	

@@ -28,6 +28,10 @@ namespace mode{
 			point_geometry::edge_remove();
 			point_geometry::edge_remove();
 		}
+		if(mode==TARGET_GEN_MODE){
+			// 2 pass for guaranteed excess edge removal
+			point_geometry::target_point_gen();
+		}
 		print_mode_debug();
 	}
 }
