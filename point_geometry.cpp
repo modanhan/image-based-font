@@ -112,7 +112,7 @@ namespace point_geometry{
 				q.push(ii(i,j));
 				while(!q.empty()){
 					ii t=q.front();q.pop();
-					g[t.first][t.second]=0;
+					g[t.first][t.second]=2;
 					v[t.first][t.second]=1;
 					for(int k=0;k<8;k++){
 						ii d(t.first+DX[k], t.second+DY[k]);
@@ -197,6 +197,7 @@ namespace point_geometry{
 	void edge_remove(){
 		
 		vector<ii> ansv;
+		vector<vector<int>> v(width,vector<int>(height,0));
 		
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
@@ -204,7 +205,10 @@ namespace point_geometry{
 				// bfs on i,j to find shortest path to the next corner
 				// does not work on droplet edge case
 				// does not work on perfect smooth curve
-				vector<vector<int>> v(width,vector<int>(height,0));
+				
+				
+				while(1){
+				vector<vector<int>> v1(width,vector<int>(height,0));
 				
 				queue<ii> q;
 				map<ii,ii> p;
@@ -212,7 +216,7 @@ namespace point_geometry{
 				
 				q.push(ii(i,j));
 				v[i][j]=1;
-				
+				v1[i][j]=1;
 				while(!q.empty()){
 					ii t=q.front();q.pop();
 					for(int k=0;k<8;k++){
@@ -220,23 +224,27 @@ namespace point_geometry{
 						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
 						
 						// t can reach a corner that's not self
-						if(g[d.first][d.second]==1&&(i!=d.first||j!=d.second)){tansv.push_back(t);continue;}
+						if(g[d.first][d.second]==1&&(i!=d.first||j!=d.second)){tansv.push_back(t);goto found;}
 						
 						if(v[d.first][d.second])continue;
+						if(v1[d.first][d.second])continue;
 						if(g[d.first][d.second]==0)continue;
-						v[d.first][d.second]=1;
+						v1[d.first][d.second]=1;
 						p[d]=t;
 						q.push(d);
 					}
 				}
-				
+				break;
+				found:;
 				for(ii ans:tansv)
 				while(1){
 					if(ans.first==i&&ans.second==j)break;
 					ansv.push_back(ans);
+					v[ans.first][ans.second]=1;
 					if(p.find(ans)==p.end()){break;}
 					ans=p[ans];
 				}
+			}
 			}
 		}
 		
@@ -256,13 +264,17 @@ namespace point_geometry{
 	void target_point_gen(){
 		target_curves.clear();
 		vector<vector<ii>> t;
+		vector<vector<int>> v(width,vector<int>(height,0));
+		
 		for(int i=0;i<width;i++){
 			for(int j=0;j<height;j++){
 				if(g[i][j]!=1)continue;
 				// bfs on i,j to find shortest path to the next corner
 				// does not work on droplet edge case
 				// does not work on perfect smooth curve
-				vector<vector<int>> v(width,vector<int>(height,0));
+				
+				while(1){
+				vector<vector<int>> v1(width,vector<int>(height,0));
 				
 				queue<ii> q;
 				map<ii,ii> p;
@@ -270,6 +282,7 @@ namespace point_geometry{
 				
 				q.push(ii(i,j));
 				v[i][j]=1;
+				v1[i][j]=1;
 				
 				while(!q.empty()){
 					ii t=q.front();q.pop();
@@ -278,17 +291,18 @@ namespace point_geometry{
 						if(d.first<0||d.first>=width||d.second<0||d.second>=height)continue;
 						
 						// t can reach a corner that's not self
-						if(g[d.first][d.second]==1&&(i!=d.first||j!=d.second)){tansv.push_back(t);continue;}
+						if(g[d.first][d.second]==1&&(i!=d.first||j!=d.second)){tansv.push_back(t);goto found;}
 						
 						if(v[d.first][d.second])continue;
+						if(v1[d.first][d.second])continue;
 						if(g[d.first][d.second]==0)continue;
-						v[d.first][d.second]=1;
+						v1[d.first][d.second]=1;
 						p[d]=t;
 						q.push(d);
 					}
 				}
-				
-				
+				break;
+				found:;
 				for(ii ans:tansv){
 				t.push_back(vector<ii>());
 				// find nearest corner
@@ -300,8 +314,10 @@ namespace point_geometry{
 				t.back().push_back(d);
 				while(1){
 					t.back().push_back(ans);
+					v[ans.first][ans.second]=1;
 					if(p.find(ans)==p.end()){break;}
 					ans=p[ans];
+				}
 				}
 				}
 			}
@@ -310,13 +326,9 @@ namespace point_geometry{
 		// filter out curves
 		set<pair<ii,ii>> st;
 		for(int i=0;i<t.size();i++){
-			if(st.count(pair<ii,ii>(t[i][0],t[i].back()))==0){
-				vector<vec2> v;
-				for(int j=0;j<t[i].size();j++)v.push_back(vec2(t[i][j].first, t[i][j].second));
-				target_curves.push_back(v);
-				st.insert(pair<ii,ii>(t[i][0],t[i].back()));
-				st.insert(pair<ii,ii>(t[i].back(),t[i][0]));
-			}
+			vector<vec2> v;
+			for(int j=0;j<t[i].size();j++)v.push_back(vec2(t[i][j].first, t[i][j].second));
+			target_curves.push_back(v);
 		}
 	}
 	

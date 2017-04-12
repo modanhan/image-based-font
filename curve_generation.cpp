@@ -13,7 +13,7 @@ namespace curve_generation{
 	
 	vector<bspline> bsplines;
 
-	int control_points=36;
+	int control_points=32;
 
 	void init(){
 		InitializeShaders(&shader, "point_vertex.glsl", "point_fragment.glsl");
