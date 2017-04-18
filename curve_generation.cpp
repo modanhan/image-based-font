@@ -62,7 +62,7 @@ namespace curve_generation{
 		
 		vector<vec2> ans;
 		ans.push_back(v[0]);
-		for(int i=1;i<v.size()-2;i+=2){
+		for(int i=2;i<v.size()-2;i+=2){
 			ans.push_back((v[i]+v[i+1])/vec2(2));
 		}
 		ans.push_back(v.back());

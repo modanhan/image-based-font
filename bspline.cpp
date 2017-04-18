@@ -37,6 +37,35 @@ void initBSplineGeometry(bspline* spline){
     vector<vec2> vertices;
     vector<vec3> colors;
     int delta=0;
+    
+    for(int i=spline->point.size()-1;i>=0;i--){
+    	auto p=spline->point[i];
+    	float f=0.01;
+    	vec3 color(0,0.5,0.5);
+    	vertices.push_back(p);
+    	colors.push_back(vec3(0,0,1));
+    	
+    	vertices.push_back(p+vec2(f,f));
+    	colors.push_back(color);
+    	vertices.push_back(spline->point[i]);
+    	colors.push_back(color);
+    	vertices.push_back(p+vec2(f,-f));
+    	colors.push_back(color);
+    	vertices.push_back(spline->point[i]);
+    	colors.push_back(color);
+    	vertices.push_back(p+vec2(-f,f));
+    	colors.push_back(color);
+    	vertices.push_back(spline->point[i]);
+    	colors.push_back(color);
+    	vertices.push_back(p+vec2(-f,-f));
+    	colors.push_back(color);
+    	vertices.push_back(p);
+    	colors.push_back(color);
+    	
+    	vertices.push_back(p);
+    	colors.push_back(vec3(0,0,1));
+    }
+    
     for(float x=0;x<=1+spline->stepsize/2;x+=spline->stepsize){
     	vec2 p(0,0);
     	while(spline->knot[delta]<=x)delta++;
@@ -45,9 +74,11 @@ void initBSplineGeometry(bspline* spline){
     		p.y+=spline->point[i].y*Bfast(spline,i,spline->degree,x);
     	}
     	vertices.push_back(p);
+    	colors.push_back(vec3(1));
+
     }
+
     
-    colors.assign(vertices.size(), vec3(1));
     
 	spline->geometry.elementCount = vertices.size();
 
