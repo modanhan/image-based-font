@@ -111,9 +111,23 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 namespace input{
 	float mousex, mousey;
+	float lmousex, lmousey;
+	int ldown;
 }
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos){
 	input::mousex=xpos/window_width*2-1;
 	input::mousey=-ypos/window_height*2+1;
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+    	input::lmousex=input::mousex; input::lmousey=input::mousey;
+    	input::ldown=1;
+    }
+    
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
+    	input::ldown=0;
+    }
 }

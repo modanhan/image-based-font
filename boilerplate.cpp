@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
     glfwSetKeyCallback(window, KeyCallback);
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwMakeContextCurrent(window);
 
     // query and print out information about our OpenGL environment
