@@ -9,6 +9,8 @@ using namespace glm;
 namespace curve_generation{
 	bspline bspline1;
 	graphics::MyShader shader;
+	
+	float detail=1;
 
 	void generate_reverse_chaikin();
 	
@@ -74,7 +76,9 @@ namespace curve_generation{
 		bsplines.resize(point_geometry::target_curves.size());
 		for(int i=0;i<point_geometry::target_curves.size();i++){
 			vector<vec2> v=point_geometry::target_curves[i];
-			for(int i=0;i<5;i++)v=reverse_chaikin(v);
+			int s=v.size();
+			int subdivn=(int)(log(s*detail));
+			for(int i=0;i<std::min(std::max(subdivn, 2), 9);i++)v=reverse_chaikin(v);
 			for(int i=0;i<v.size();i++){
 				auto t=v[i];
 				t.x/=window_width/2;

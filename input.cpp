@@ -4,6 +4,7 @@
 #include "shaders.h"
 
 #include "point_geometry.h"
+#include "curve_generation.h"
 
 #include <iostream>
 #include <algorithm>
@@ -22,6 +23,11 @@ if(mode::mode<=CORNER_DETECT_MODE){
 if(mode::mode==CORNER_CONNECT_MODE){
 	cout<<"\e[A\e[A";
 		cout<<"Max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
+	cout<<"======================================\n";
+}
+if(mode::mode==CURVE_GEN_MODE){
+	cout<<"\e[A\e[A";
+		cout<<"Details:\t"<<1/curve_generation::detail<<"                \n";
 	cout<<"======================================\n";
 }
 }
@@ -54,6 +60,10 @@ void print_mode_debug(){
 		<<" curves detected\n";
 		cout<<"======================================\n";
 	}
+	if(mode::mode==CURVE_GEN_MODE){
+		cout<<"Details:\t"<<1/curve_generation::detail<<"                \n";
+	cout<<"======================================\n";
+}
 }
 
 
@@ -82,6 +92,19 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 		point_geometry::corner_connect_distance+=(yoffset>0)?1:-1;
 		point_geometry::corner_connect_distance=max(min(point_geometry::corner_connect_distance,MAX_CONNECT_DISTANCE*MAX_CONNECT_DISTANCE),0);
 		point_geometry::connect_corner();
+		print_debug();
+	}
+	
+	if(mode::mode == CURVE_GEN_MODE){
+		curve_generation::detail+=yoffset*-0.02;
+		
+		curve_generation::detail=std::min(
+		curve_generation::detail,10.0f);
+		
+		curve_generation::detail=std::max(
+		curve_generation::detail,0.1f);
+		
+		curve_generation::generate();
 		print_debug();
 	}
 }
