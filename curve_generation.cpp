@@ -1,5 +1,6 @@
 #include "curve_generation.h"
 #include "point_geometry.h"
+#include "bspline.h"
 #include <vector>
 #include <iostream>
 
@@ -24,23 +25,6 @@ namespace curve_generation{
 	
 	void generate(){
 		generate_reverse_chaikin();
-		return;
-	
-		bsplines.resize(point_geometry::target_curves.size());
-		for(int i=0;i<point_geometry::target_curves.size();i++){
-			int tsize=point_geometry::target_curves[i].size()-1;
-			vector<vec2> v;
-			for(int j=0;j<control_points;j++){
-				vec2 t=point_geometry::target_curves[i].at(tsize*j/(control_points-1));
-				t.x/=window_width/2;
-				t.y/=window_height/2;
-				t.x-=1;
-				t.y-=1;
-				v.push_back(vec2(t.y,-t.x));
-			}
-			bsplines[i].point=v;
-			initBSpine(&bsplines[i]);
-		}
 	}
 	
 	vector<vec2> reverse_chaikin(vector<vec2>& ov){
@@ -105,6 +89,36 @@ namespace curve_generation{
 		glUseProgram(0);
 
 		graphics::CheckGLErrors();
+		}
+	}
+	
+	// editing functions
+	
+	void remove_cp(glm::vec2 pos){
+		int ansi=-1, ansj=-1;
+		float d=1000;
+		for(int i=0;i<bsplines.size();i++){
+			// can't delete corners
+			for(int j=1;j<bsplines[i].point.size()-1;j++){
+				vec2 diff=bsplines[i].point[j]-pos;
+				if(abs(diff.x)<CPSIZE&&abs(diff.y)<CPSIZE){
+					if(abs(diff.x)+abs(diff.y)<d){
+						d=abs(diff.x)+abs(diff.y);
+						ansi=i;ansj=j;
+					}
+				}
+			}
+		}
+		
+		if(ansi!=-1&&ansj!=-1){
+			vector<vec2> v;
+			for(int j=0;j<bsplines[ansi].point.size();j++){
+				if(j!=ansj){
+					v.push_back(bsplines[ansi].point[j]);
+				}
+			}
+			bsplines[ansi].point=v;
+			initBSpine(&bsplines[ansi]);
 		}
 	}
 }

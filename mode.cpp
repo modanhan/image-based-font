@@ -32,8 +32,14 @@ namespace mode{
 		if(mode==TARGET_GEN_MODE){
 			point_geometry::target_point_gen();
 		}
-		if(mode==TARGET_GEN_MODE){
+		if(mode==CURVE_GEN_MODE){
 			curve_generation::generate();
+		}
+		if(mode==EDIT_MODE){
+		
+		}
+		if(mode>EDIT_MODE){
+			mode=EDIT_MODE;
 		}
 		print_mode_debug();
 	}

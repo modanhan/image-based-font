@@ -11,4 +11,6 @@ namespace curve_generation{
 	void init();
 	void generate();
 	void render();
+	
+	void remove_cp(glm::vec2);
 }

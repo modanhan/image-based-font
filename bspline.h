@@ -3,6 +3,8 @@
 #include "graphics.h"
 #include <vector>
 
+#define CPSIZE 0.01
+
 #define PI 3.1415926
 
 struct bspline{

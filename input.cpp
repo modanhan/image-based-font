@@ -10,6 +10,8 @@
 #include <algorithm>
 using namespace std;
 
+typedef pair<int,int> ii;
+
 void print_debug(){
 if(mode::mode<=CORNER_DETECT_MODE){
 	cout<<"\e[A\e[A\e[A\e[A";
@@ -62,8 +64,12 @@ void print_mode_debug(){
 	}
 	if(mode::mode==CURVE_GEN_MODE){
 		cout<<"Details:\t"<<1/curve_generation::detail<<"                \n";
-	cout<<"======================================\n";
-}
+		cout<<"======================================\n";
+	}
+	if(mode::mode==EDIT_MODE){
+		cout<<"Manual editing\n";
+		cout<<"======================================\n";
+	}
 }
 
 
@@ -113,11 +119,14 @@ namespace input{
 	float mousex, mousey;
 	float lmousex, lmousey;
 	int ldown;
+	
+	vector<ii> selected;
 }
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos){
 	input::mousex=xpos/window_width*2-1;
 	input::mousey=-ypos/window_height*2+1;
+
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -125,9 +134,14 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
     	input::lmousex=input::mousex; input::lmousey=input::mousey;
     	input::ldown=1;
+    	
     }
     
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
     	input::ldown=0;
     }
+    
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+		if(mode::mode==EDIT_MODE)
+			curve_generation::remove_cp(glm::vec2(input::mousex,input::mousey));
 }

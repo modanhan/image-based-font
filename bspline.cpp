@@ -40,7 +40,7 @@ void initBSplineGeometry(bspline* spline){
     
     for(int i=spline->point.size()-1;i>=0;i--){
     	auto p=spline->point[i];
-    	float f=0.01;
+    	float f=CPSIZE;
     	vec3 color(0,0.5,0.5);
     	if(i==0||i==spline->point.size()-1)color=vec3(0,1,1);
     	vertices.push_back(p);
