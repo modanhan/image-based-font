@@ -13,4 +13,7 @@ namespace curve_generation{
 	void render();
 	
 	void remove_cp(glm::vec2);
+	void select_cp(glm::vec2);
+	void move_cp(glm::vec2);
+	void deselect();
 }

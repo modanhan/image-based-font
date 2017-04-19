@@ -7,6 +7,8 @@
 using namespace std;
 using namespace glm;
 
+typedef pair<int, int> ii;
+
 namespace curve_generation{
 	bspline bspline1;
 	graphics::MyShader shader;
@@ -98,6 +100,8 @@ namespace curve_generation{
 		int ansi=-1, ansj=-1;
 		float d=1000;
 		for(int i=0;i<bsplines.size();i++){
+			// can't delete less than 3 cps
+			if(bsplines[i].point.size()<=3)continue;
 			// can't delete corners
 			for(int j=1;j<bsplines[i].point.size()-1;j++){
 				vec2 diff=bsplines[i].point[j]-pos;
@@ -119,6 +123,69 @@ namespace curve_generation{
 			}
 			bsplines[ansi].point=v;
 			initBSpine(&bsplines[ansi]);
+		}
+	}
+	
+	vector<ii> selected;
+	
+	void select_cp(glm::vec2 pos){
+		// if non corner is the closest, select 1 cp
+		// if corner is the closest, select 2 cp
+		
+		int ansi=-1, ansj=-1;
+		float d=1000;
+		for(int i=0;i<bsplines.size();i++){
+			// can't delete corners
+			for(int j=1;j<bsplines[i].point.size()-1;j++){
+				vec2 diff=bsplines[i].point[j]-pos;
+				if(abs(diff.x)<CPSIZE&&abs(diff.y)<CPSIZE){
+					if(abs(diff.x)+abs(diff.y)<d){
+						d=abs(diff.x)+abs(diff.y);
+						ansi=i;ansj=j;
+					}
+				}
+			}
+		}
+		vector<ii> cans;
+		float cd=d;
+		for(int i=0;i<bsplines.size();i++){
+			{
+				vec2 diff=bsplines[i].point[0]-pos;
+				if(abs(diff.x)<CPSIZE&&abs(diff.y)<CPSIZE){
+					if(abs(diff.x)+abs(diff.y)<=cd+0.00001){
+						cd=abs(diff.x)+abs(diff.y);
+						cans.push_back(ii(i,0));
+					}
+				}
+			}
+			{
+				vec2 diff=bsplines[i].point.back()-pos;
+				if(abs(diff.x)<CPSIZE&&abs(diff.y)<CPSIZE){
+					if(abs(diff.x)+abs(diff.y)<=cd+0.00001){
+						cd=abs(diff.x)+abs(diff.y);
+						cans.push_back(ii(i,bsplines[i].point.size()-1));
+					}
+				}
+			}
+		}
+		
+		// modifying exactly 1 corner
+		if(cans.size()==2){
+			for(int i=0;i<cans.size();i++)selected.push_back(cans[i]);
+		}else if(ansi!=-1&&ansj!=-1){
+			selected.push_back(ii(ansi,ansj));
+		}
+	}
+	
+	void deselect(){
+		selected.clear();
+	}
+	
+	void move_cp(glm::vec2 pos){
+		if(selected.empty())return;
+		for(auto i:selected){
+			bsplines[i.first].point[i.second]=pos;
+			initBSpine(&bsplines[i.first]);
 		}
 	}
 }

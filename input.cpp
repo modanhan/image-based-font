@@ -127,6 +127,8 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos){
 	input::mousex=xpos/window_width*2-1;
 	input::mousey=-ypos/window_height*2+1;
 
+	if(mode::mode==EDIT_MODE)
+		curve_generation::move_cp(glm::vec2(input::mousex,input::mousey));
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -135,10 +137,18 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     	input::lmousex=input::mousex; input::lmousey=input::mousey;
     	input::ldown=1;
     	
+    	
+		if(mode::mode==EDIT_MODE)
+			curve_generation::select_cp(glm::vec2(input::mousex,input::mousey));
+			
+    	
     }
     
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
     	input::ldown=0;
+		if(mode::mode==EDIT_MODE)
+			if(mode::mode==EDIT_MODE)
+				curve_generation::deselect();
     }
     
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
