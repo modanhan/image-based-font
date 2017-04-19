@@ -10,6 +10,7 @@
 #define EDGE_REMOVE_MODE 7
 #define TARGET_GEN_MODE 8
 #define CURVE_GEN_MODE 9
+#define EDIT_MODE 10
 
 namespace mode{
 	void advance();

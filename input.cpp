@@ -108,3 +108,12 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 		print_debug();
 	}
 }
+
+namespace input{
+	float mousex, mousey;
+}
+
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos){
+	input::mousex=xpos/window_width*2-1;
+	input::mousey=-ypos/window_height*2+1;
+}

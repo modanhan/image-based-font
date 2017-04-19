@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
     // set keyboard callback function and make our context current (active)
     glfwSetKeyCallback(window, KeyCallback);
     glfwSetScrollCallback(window, scroll_callback);
+    glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwMakeContextCurrent(window);
 
     // query and print out information about our OpenGL environment
