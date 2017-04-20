@@ -7,6 +7,7 @@
 
 namespace mode{
 	int mode=0;
+	int read_from_file=0;
 	void advance(){
 		mode++;
 		if(mode==ERASE_DRAW_CORNER_MODE){
@@ -37,11 +38,13 @@ namespace mode{
 			curve_generation::generate();
 		}
 		if(mode==EDIT_MODE){
-		
+			if(read_from_file)
+				read_curve(curve_file_name);
 		}
 		if(mode>EDIT_MODE){
 			write_curve(curve_file_name);
 			mode=EDIT_MODE;
+			return;
 		}
 		print_mode_debug();
 	}

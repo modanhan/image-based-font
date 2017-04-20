@@ -119,12 +119,6 @@ int main(int argc, char *argv[])
 	
 	curve_io_init(argv[1]);
 	
-	if (!InitializeTexture(&texture, images)){
-		// curve file selected instead, go to edit mode
-		read_curve(curve_file_name);
-		mode::mode=EDIT_MODE;
-	}
-		
 	MyFrameBuffer blurFramebuffer;
 	if (!InitializeFrameBuffer(&blurFramebuffer, vec2(window_width, window_height), 1))
 		cout << "Program failed to intialize frame buffer!" << endl;
@@ -145,6 +139,11 @@ int main(int argc, char *argv[])
 		cout << "Program failed to intialize frame buffer!" << endl;
 	
 	MyFrameBuffer nullFramebuffer;
+	
+	if (!InitializeTexture(&texture, images)){
+		// curve file selected instead, go to edit mode
+		mode::read_from_file=1;
+	}
 
     // run an event-triggered main loop
     while (!glfwWindowShouldClose(window))
@@ -170,6 +169,8 @@ int main(int argc, char *argv[])
         	curve_generation::render();
         }
         
+    	if(mode::read_from_file)if(mode::mode<EDIT_MODE){mode::advance();continue;}
+    	
         // scene is rendered to the back buffer, so swap to front for display
         glfwSwapBuffers(window);
 

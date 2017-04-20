@@ -19,7 +19,7 @@ void curve_io_init(char* c){
 	curve_file_name+=".txt";
 }
 
-void read_curve(string name){/*
+void read_curve(string name){
 	ifstream file(name);
 	int n;file>>n;
 	curve_generation::bsplines.assign(n,bspline());
@@ -31,14 +31,14 @@ void read_curve(string name){/*
 		}
 		initBSpine(&curve_generation::bsplines[i]);
 	}
-	file.close();*/
-	
+	file.close();
+	/*
 	curve_generation::bsplines.assign(1,bspline());
 	curve_generation::bsplines[0].point.push_back(glm::vec2(0,0));
 	curve_generation::bsplines[0].point.push_back(glm::vec2(0,1));
 	curve_generation::bsplines[0].point.push_back(glm::vec2(1,1));
 	curve_generation::bsplines[0].point.push_back(glm::vec2(1,0));
-	initBSpine(&curve_generation::bsplines[0]);
+	initBSpine(&curve_generation::bsplines[0]);*/
 }
 
 void write_curve(string name){

@@ -13,33 +13,41 @@ using namespace std;
 typedef pair<int,int> ii;
 
 void print_debug(){
+
+if(mode::read_from_file)return;
+
 if(mode::mode<=CORNER_DETECT_MODE){
 	cout<<"\e[A\e[A\e[A\e[A";
 	cout<<"======================================\n";
 	
 	// spaces here are for writing over existing characters
- 	cout<<"Edge detection threshold:\t"<<shaders::canny_threshold<<"                \n";
- 	cout<<"Corner detection threshold:\t"<<shaders::harris_threshold<<"                \n";
+ 	cout<<"SCROLL to adjust edge detection threshold:\t"<<shaders::canny_threshold<<"                \n";
+ 	cout<<"SCROLL to adjust corner detection threshold:\t"<<shaders::harris_threshold<<"                \n";
 	cout<<"======================================\n";
 }
 if(mode::mode==CORNER_CONNECT_MODE){
 	cout<<"\e[A\e[A";
-		cout<<"Max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
+	cout<<"SCROLL to adjust max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
 	cout<<"======================================\n";
 }
 if(mode::mode==CURVE_GEN_MODE){
 	cout<<"\e[A\e[A";
-		cout<<"Details:\t"<<1/curve_generation::detail<<"                \n";
+	cout<<"SCROLL to adjust details:\t"<<1/curve_generation::detail<<"                \n";
 	cout<<"======================================\n";
 }
+
 }
 
 void init_input(){
+	cout<<"Welcome to Imaged Based Font Generator!\n";
+	cout<<"Make adjustments by following the prompts\n\tor\nPress ENTER to confirm selection.\n\n";
+
 	cout<<"\n\n\n\n\n";
 	print_debug();
 }
 
 void print_mode_debug(){
+if(!mode::read_from_file){
 	if(mode::mode==GENERATE_MODE){
 		cout<<"Point geometry generated\n";
 		cout<<"======================================\n";
@@ -50,8 +58,8 @@ void print_mode_debug(){
 	}
 	if(mode::mode==CORNER_CONNECT_MODE){
 		cout<<"Connecting corners to edges\n";
-		cout<<"Max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
-		cout<<"======================================\n";
+		cout<<"SCROLL to adjust max connect distance:\t"<<point_geometry::corner_connect_distance<<"                \n";
+	cout<<"======================================\n";
 	}
 	if(mode::mode==EDGE_REMOVE_MODE){
 		cout<<"Removing edges\n";
@@ -63,12 +71,20 @@ void print_mode_debug(){
 		cout<<"======================================\n";
 	}
 	if(mode::mode==CURVE_GEN_MODE){
-		cout<<"Details:\t"<<1/curve_generation::detail<<"                \n";
+		cout<<"SCROLL to adjust details:\t"<<1/curve_generation::detail<<"                \n";
 		cout<<"======================================\n";
 	}
+}
 	if(mode::mode==EDIT_MODE){
-		cout<<"Manual editing\n";
-		cout<<"======================================\n";
+		if(mode::read_from_file){
+			cout<<"File read\n";
+			cout<<"Press ENTER to begin manual editing\n";
+			cout<<"======================================\n";
+		}else{
+			cout<<"Manual editing\n";
+			cout<<"Press ENTER to save changes\n";
+			cout<<"======================================\n";
+		}
 	}
 }
 

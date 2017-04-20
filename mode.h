@@ -15,4 +15,5 @@
 namespace mode{
 	void advance();
 	extern int mode;
+	extern int read_from_file;
 }
