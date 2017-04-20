@@ -33,6 +33,8 @@ float Bfast(bspline* spline, int k, int n, float x){
 }
 
 void initBSplineGeometry(bspline* spline){
+
+	DestroyGeometry(&spline->geometry);
 	InitializeGeometry(&spline->geometry);
     vector<vec2> vertices;
     vector<vec3> colors;
