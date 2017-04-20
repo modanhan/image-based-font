@@ -1,10 +1,10 @@
 #pragma once
 
 #include "bspline.h"
+#include <vector>
 
 namespace curve_generation{
-	extern bspline bspline1;
-	
+	extern std::vector<bspline> bsplines;
 	extern int control_points;
 	extern float detail;
 

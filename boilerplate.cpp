@@ -22,6 +22,7 @@
 #include "mode.h"
 #include "point_geometry.h"
 #include "curve_generation.h"
+#include "curve_io.h"
 
 using namespace std;
 using namespace glm;
@@ -115,8 +116,14 @@ int main(int argc, char *argv[])
 	MyTexture texture;
 	char images[50]="images/";
 	strcat(images , argv[1]);
-	if (!InitializeTexture(&texture, images))
-		cout << "Program failed to intialize texture!" << endl;
+	
+	curve_io_init(argv[1]);
+	
+	if (!InitializeTexture(&texture, images)){
+		// curve file selected instead, go to edit mode
+		read_curve(curve_file_name);
+		mode::mode=EDIT_MODE;
+	}
 		
 	MyFrameBuffer blurFramebuffer;
 	if (!InitializeFrameBuffer(&blurFramebuffer, vec2(window_width, window_height), 1))

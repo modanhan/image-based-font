@@ -1,7 +1,6 @@
 #include "curve_generation.h"
 #include "point_geometry.h"
 #include "bspline.h"
-#include <vector>
 #include <iostream>
 
 using namespace std;
@@ -10,7 +9,6 @@ using namespace glm;
 typedef pair<int, int> ii;
 
 namespace curve_generation{
-	bspline bspline1;
 	graphics::MyShader shader;
 	
 	float detail=1;
